@@ -1,0 +1,309 @@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%              Supplementary Content                %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%------------------------------------------------
+\section{Supplementary content}
+%------------------------------------------------
+\subsection{Overview of mesh adaptive direct search}
+%------------------------------------------------
+\begin{frame}[t,label=abm_5]
+	\frametitle{Overview of mesh adaptive direct search}
+	\tikzstyle{background grid}=[draw, black!50,step=.5cm]
+	%
+	\uncover<1->{No gradient information available, blackbox is expensive\ifshowcitations\footpartcite{Audet2017}\fi}\\
+	%
+	\begin{columns}[t] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+		\begin{column}{.42\textwidth} % Left column and width
+			\vspace{-1.2em}
+			% Optimization problem
+			\begin{exampleblock}{Objective and constraints}
+				\begin{equation*}
+					\begin{aligned}
+						& \underset{\mathbf{x}}{\text{min}}
+						& & f(\mathbf{x})\\
+						& \text{subject to}
+						& & {c}(\mathbf{x}) \le 0\\
+						& \text{where}
+						& & \mathbf{x}:\text{ variables}\\
+					\end{aligned}
+				\end{equation*}
+			\end{exampleblock}
+
+			\small
+			\begin{itemize}\itemsep0em
+				\item SEARCH step and POLL step
+				\item<2-> we focus on the POLL step
+				\item<3-> incumbent solution: $x_k$
+				\item<4-> trail points: $\left\{p_1,p_2,\cdots,p_k\right\}$
+				\item<10-> successful trail point $p_7$
+			\end{itemize}
+		\end{column}
+		%
+		\begin{column}{.5\textwidth} % Left column and width
+			\tikzstyle{background grid}=[draw, black!50,step=.5cm]
+			
+			\only<2>{\def\frameopt{-2}}%
+			\only<3>{\def\frameopt{-1}}%
+			\only<4>{\def\frameopt{0}}%
+			\only<5>{\def\frameopt{1}}%
+			\only<6>{\def\frameopt{2}}%
+			\only<7>{\def\frameopt{3}}%
+			\only<8>{\def\frameopt{4}}%
+			\only<9>{\def\frameopt{5}}%
+			\only<10>{\def\frameopt{6}}%
+			\only<11>{\def\frameopt{7}}%
+			\only<12>{\def\frameopt{8}}%
+			\only<13>{\def\frameopt{9}}%
+
+			\tikzstyle{background grid}=[draw, black!50,step=.1cm]
+			\hspace*{5em}\raisebox{-1em}{%
+				\begin{tikzpicture}[scale=0.45, every node/.style={scale=0.45}, remember picture, overlay] %show background grid, 
+					\only<2->{\input{schematics/mads}}%
+				\end{tikzpicture}%
+			}%
+		\end{column}
+	
+	\end{columns}
+	\vspace{-3em}
+\end{frame}
+\addtocounter{footnote}{-1}
+%------------------------------------------------
+\begin{frame}[t,label=abm_6]
+	\frametitle{Overview of stochastic mesh adaptive direct search}
+	\tikzstyle{background grid}=[draw, black!50,step=.5cm]
+	%
+	\uncover<1->{No gradient information available, blackbox is expensive and \emphasis{noisy}\ifshowcitations\footpartcite{Audet2020}\fi}%
+	\only<9->{{\color{white}\ifshowcitations\footpartcite{Dzahini2022}\fi}}\\
+	%
+	\begin{columns}[t] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+		\begin{column}{.42\textwidth} % Left column and width
+			\vspace{-1.2em}
+			% Optimization problem
+			\begin{exampleblock}{Objective and constraints}
+				\vspace{-1.2em}
+				\begin{equation*}
+					\begin{aligned}
+						& \underset{\mathbf{x}}{\text{min}}
+						& & f(\mathbf{x}) = \mathbb{E}_{\Theta}\left[{f}_{\Theta}(\mathbf{x})\right]\\
+						& \text{subject to}
+						& & {c}(\mathbf{x}) = \mathbb{E}_{\Theta}\left[{c}_{\Theta}(\mathbf{x})\right] \le 0\\
+						& \text{where}
+						& & \mathbf{x}:\text{ variables}~\Theta\mathrm{:realizations}
+					\end{aligned}
+				\end{equation*}
+			\end{exampleblock}
+			\only<-8>{
+				\small
+				\begin{itemize}\itemsep0em
+					\item Constructs estimates of objective:
+					%
+					\vspace{-1em}
+					\begin{equation*} \label{eq:samplerate}
+						f^{k} = \dfrac{1}{n^k}\sum_{i=1}^{n^k} f_{\Theta_{0,i}}({x}_k)
+					\end{equation*}
+					\vspace{-1em}
+					%
+					\item<2-> $n^k$ is the sampling rate
+					\item<3-> Tracks uncertainty interval $\mathcal{I}(\delta^k_\text{poll})$ in the estimate
+				\end{itemize}
+			}%
+			\only<9->{~\\~\\\centering Constraint handling using the \textit{progressive barrier} approach \footnotemark[2]}%
+		\end{column}
+		%
+		\begin{column}{.5\textwidth} % Left column and width
+			\tikzstyle{background grid}=[draw, black!50,step=.5cm]
+			
+			\only<-2>{\def\frameopt{2}}%
+			\only<3>{\def\frameopts{1}}%
+			\only<4>{\def\frameopts{2}}%
+			\only<5>{\def\frameopts{3}}%
+			\only<6>{\def\frameopts{4}}%
+			\only<7>{\def\frameopts{5}}%
+			\only<8->{\def\frameopts{6}}%
+
+			\tikzstyle{background grid}=[draw, black!50,step=.1cm]
+			\hspace*{5em}\raisebox{-1em}{%
+				\begin{tikzpicture}[scale=0.45, every node/.style={scale=0.45}, remember picture, overlay] %show background grid, 
+					\only<-2>{\input{schematics/mads}}%
+					\only<3->{\input{schematics/stomads}}%
+				\end{tikzpicture}%
+			}%
+		\end{column}
+	\end{columns}
+	\vspace{-3em}
+\end{frame}
+\addtocounter{footnote}{-2}
+%------------------------------------------------
+\subsection{ABM Conclusion}
+%------------------------------------------------
+\begin{frame}[t,label=abm_7]
+	\frametitle{Conclusion}
+	\tikzstyle{background grid}=[draw, black!50,step=.5cm]
+	%
+	\uncover<1->{Formulated and solved public health policy-making problems}%
+	\only<6->{{\color{white}\ifshowcitations\footpartcite{Ferguson2020}\fi}}\\
+	%
+	\begin{columns}[t] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+		\begin{column}{.42\textwidth} % Left column and width
+			\begin{itemize}
+				\item<1-> Identified a public health policy that favored
+				\begin{itemize}
+					\item<2-> High testing capacity $n_T$
+					\item<3-> Large number of essential workers $n_E$
+					\item<4-> Modest social distancing $S_D$
+				\end{itemize}
+				\item<5-> StoMADS outperformed GAs and NOMAD on active constraints
+				\item<6-> Applicable to other large-scale agent-based models\footnotemark[1]
+			\end{itemize}
+		\end{column}
+		%
+		\begin{column}{.5\textwidth} % Left column and width
+			\tikzstyle{background grid}=[draw, black!50,step=.5cm]
+			\begin{tikzpicture}[remember picture, overlay]%[show background grid]
+				\node [inner sep=0pt,above right, opacity=1.0]  at (0.0\textwidth,-0.75\textheight) (mobility) 
+				{
+					\only<-5>{\includegraphics[width=0.93\textwidth]{agent_based_models/trajecctory_results/M_compare_opt_2.pdf}}%
+				};
+				\only<-5>{
+					\node[inner sep=0pt,align=flush center,above=\belowcaptionskip of mobility,text width=\linewidth]
+					{\vspace{-0em}{
+						\large best known solution
+					}};
+				}%
+				% show origin
+				% \fill (0,0) circle (2pt);
+			\end{tikzpicture}%
+			\begin{tikzpicture}[remember picture, overlay] %show background grid, 
+				\node [inner sep=0pt,above right, opacity=1.0]  at (0.1\textwidth,-0.66\textheight) (abm) 
+					{
+						\only<6>{
+							\begin{animateinline}[autoplay,width=0.9\textwidth]{8}
+								\ifshowanimations
+									\multiframe{48}{i=1+15}{%
+										\includegraphics{agent_based_models/canada_ABM_anim/map_\i.png}
+									}
+								\else
+									\multiframe{1}{i=721+0}{%
+										\includegraphics{agent_based_models/canada_ABM/map_\i.png}
+									}
+								\fi
+							\end{animateinline}%
+						}%
+						\only<7->{
+							\includegraphics[width=0.9\textwidth]{agent_based_models/canada_ABM/map_721.png}
+						}
+					};
+			\end{tikzpicture}%
+		\end{column}
+	
+	\end{columns}
+	\vspace{-3em}
+\end{frame}
+\addtocounter{footnote}{-1}
+%------------------------------------------------
+\subsection{COVID-19 introduction}
+%------------------------------------------------
+\begin{frame}[t]
+	\frametitle{Background: COVID-19 forecasting targets}
+	\tikzstyle{background grid}=[draw, black!50,step=.5cm]
+	%
+	Forecasting novel epidemics is a multidisciplinary field involving multiple \emph{targets} \footpartcite{Wu2021}\\
+	\emph{Inputs} for forecasting \emphasis{epidemic size:}\\
+    %
+    \begin{itemize}
+        \item<2-> Growth rate indicators
+        \item<3-> \only<5->{\emphasis}{Historical incidence rate data}
+        \item<4-> \only<5->{\emphasis}{Serologic assays}\\
+        \centering\includegraphics[width=0.23\textwidth]{machine_learning/targets/pcr.png}
+    \end{itemize}
+    %
+	\tikzstyle{background grid}=[draw, black!50,step=.5cm]
+	\begin{tikzpicture}[remember picture, overlay] %show background grid, 
+		% Put the graphic inside a node. This makes it easy to place the
+		% graphic and to draw on top of it. 
+		% The above right option is used to place the lower left corner
+		% of the image at the (0,0) coordinate. 
+		\node [inner sep=0pt,above left, opacity=1.0]  at (0.99\textwidth,-0.0\textheight) (seq2seq) 
+			{
+				\only<1>{\includegraphics[width=0.45\textwidth]{machine_learning/targets/nowcasting_targets_1.pdf}}%
+				\only<2>{\includegraphics[width=0.45\textwidth]{machine_learning/targets/nowcasting_targets_2.pdf}}%
+                \only<3->{\includegraphics[width=0.45\textwidth]{machine_learning/targets/nowcasting_targets_3.pdf}}%
+			};
+		\only<1->{
+			\node[inner sep=0pt,align=flush center,below=\belowcaptionskip of seq2seq,text width=\linewidth]
+				{\vspace{-1em}{Nowcasting targets}};
+		}%
+		% show origin
+		% \fill (0,0) circle (2pt);
+	\end{tikzpicture}%
+	%
+	\vspace{-3em}
+\end{frame}
+\addtocounter{footnote}{-1}
+%------------------------------------------------
+\subsection{Hyperparameter tuning future directions}
+%------------------------------------------------
+\begin{frame}[t]
+	\frametitle{Conclusion and future directions}
+	\tikzstyle{background grid}=[draw, black!50,step=.5cm]
+	%
+	\only<1-5>{Model discovery and development facilitated by hyperparameter optimization}%
+	\only<6->{StoMADS can be improved to solve a wide variety of HPO problems}%
+	\only<5>{{\color{white}\ifshowcitations\footpartcite{Hay2021}\fi}}%
+	\only<7->{{\color{white}\ifshowcitations\footpartcite{Lakhmiri2019}\textsuperscript{,}\footpartcite{Bergstra2011}\fi}}\\
+	%
+	\tikzstyle{background grid}=[draw, black!50,step=.5cm]
+	\begin{tikzpicture}[remember picture, overlay] %show background grid, 
+		% Put the graphic  inside a node. This makes it easy to place the
+		% graphic and to draw on top of it. 
+		% The above right option is used to place the lower left corner
+		% of the image at the (0,0) coordinate. 
+		\node [inner sep=0pt,above left, opacity=1.0]  at (1.01\textwidth,-0.73\textheight) (prediction) 
+			{
+				\only<3->{\includegraphics[width=0.5\textwidth]{machine_learning/predictions/model_predictions_unseen_SVR_mean_Ct_daily_cases_G12.pdf}}%
+			};
+		% show origin
+		% \fill (0,0) circle (2pt);
+	\end{tikzpicture}%
+	
+	\begin{columns}[c] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+		\begin{column}{.5\textwidth} % Left column and width
+			\vspace{-0.0em}
+			% Optimization problem
+			\begin{itemize}\itemsep0em
+			\only<-5>{
+				\item<2-5> Cycle Threshold (Ct) is a useful feature for incidence projection
+				\item<3-5> Model that generalizes well on unseen data
+    			\item<4-5> Simpler models perform well when historical data is limited
+				\item<5> Works well on other datasets\footnotemark[1]
+			}
+			\item<6-> Can be used to meet deployment targets
+				\begin{exampleblock}{Objective and constraints}
+					\vspace{-1.0em}%
+					\begin{equation*}
+						\begin{aligned}
+							& \underset{\mathbf{x}}{\text{min}}
+							& & f(\mathbf{x}) = \mathbb{E}_{\Theta}\left[{f}_{\Theta}(\mathbf{x}) = \mathrm{error}_\mathrm{CV}\right]\\
+							& \text{subject to}
+							& & {c}(\mathbf{x}) = \mathrm{\small inference~time} - \mathrm{\small threshold} \le 0\\
+							& \text{where}
+							& & \Theta\mathrm{:realizations}
+						\end{aligned}
+					\end{equation*}
+				\end{exampleblock}
+				\item<7-> Should be benchmarked against HyperNOMAD\footnotemark[1], Bayesian optimization\footnotemark[2]
+				\item<8-> Mixed variable version is needed
+			\end{itemize}
+			\only<-5>{\vspace{-10em}}
+		\end{column}
+		%
+		\begin{column}{.5\textwidth} % Left column and width
+		\end{column}
+	
+	\end{columns}
+	%
+	\vspace{-3em}
+\end{frame}
+\addtocounter{footnote}{-2}
+%------------------------------------------------

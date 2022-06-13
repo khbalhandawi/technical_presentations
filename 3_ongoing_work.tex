@@ -1,0 +1,96 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%         APPLYING THE RESEARCH QUESTIONS           %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%------------------------------------------------
+\begin{frame}[c,noframenumbering]
+	\centering
+	% \setlength\fboxsep{0pt}
+	\begin{titleblock}{}
+		~\\%
+		{\centering\LARGE Ongoing work: Design space exploration\\}%
+		~\\%
+	\end{titleblock}
+\end{frame}
+%------------------------------------------------
+\section{Ongoing work}
+%------------------------------------------------
+\begin{frame}
+	\frametitle{Design space exploration at the conceptual level}
+	
+	\only<1>{Consider a functional model (FM) of a product (conceptual design)}%
+	\only<2>{\emph{hyperlinks}\textsuperscript{1} used in multi-domain modelling}%
+	\only<3>{to link FM $\to$ margin value analysis\textsuperscript{2}}%
+	\only<4->{different concepts have different preliminary designs}%
+	{\color{white}\ifshowcitations\footpartcite{Ahmad2013}\textsuperscript{,}\footpartcite{Brahma2020}\fi}%
+	
+	\begin{columns}[t] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+			
+		\begin{column}{.5\textwidth} % Left column and width
+	
+			\centering\textbf{conceptual design}
+			\begin{figure}
+				\only<1>{\includegraphics[height=5cm]{design_space_exploration/efm_example_1.pdf}}%
+				\only<2>{\includegraphics[height=5cm]{design_space_exploration/efm_example_2.pdf}}%
+				\only<3-5>{\includegraphics[height=5cm]{design_space_exploration/efm_example_3.pdf}}%
+				\only<6->{\includegraphics[height=5cm]{design_space_exploration/efm_example_4.pdf}}%
+			\end{figure}
+			%
+			\tikzstyle{background grid}=[draw, black!50,step=.5cm]
+			\begin{tikzpicture}[remember picture, overlay, shift={(2,6)}] %show background grid, 
+				\node [draw=black, line width=0.5mm, inner sep=0pt,above left, opacity=1.0]  at (-0.35\textwidth,-0.45\textheight) (trsA) 
+					{
+						\only<3->{\includegraphics[width=0.15\textwidth]{design_space_exploration/TRS_alt_1.pdf}}%
+					};
+				\node [draw=black, line width=0.5mm, inner sep=0pt,above left, opacity=1.0]  at (-0.15\textwidth,-0.45\textheight) (trsB) 
+					{
+						\only<6->{\includegraphics[width=0.15\textwidth]{design_space_exploration/TRS_alt_3.pdf}}%
+					};
+				% show origin
+				% \fill (0,0) circle (2pt);
+			\end{tikzpicture}%
+			%
+		\end{column}
+	
+		\vrule{}
+	
+		\begin{column}{.5\textwidth} % Left column and width
+	
+			\centering\textbf{preliminary design}
+	
+			\begin{figure}
+				\uncover<2->{
+					\only<-2>{\includegraphics[height=5cm]{design_space_exploration/man_example_1.pdf}}%
+				}%
+				\only<3-5>{\includegraphics[height=5cm]{design_space_exploration/man_example_2.pdf}}%
+				\only<6->{\includegraphics[height=5cm]{design_space_exploration/man_example_3.pdf}}%
+			\end{figure}
+			%
+			\tikzstyle{background grid}=[draw, black!50,step=.5cm]
+			\begin{tikzpicture}[remember picture, overlay, shift={(2,6)}] %show background grid, 
+				\node [draw=black, line width=0.1mm, fill=white!20, inner sep=0pt,above left, opacity=1.0]  at (-0.4\textwidth,-0.65\textheight) (loadA) 
+					{
+						\only<5->{\includegraphics[width=0.35\textwidth]{design_space_exploration/load_cases_1.pdf}}%
+					};
+				\node [draw=black, line width=0.1mm, fill=white!20, inner sep=0pt,above left, opacity=1.0]  at (-0.4\textwidth,-0.15\textheight) (loadB) 
+					{
+						\only<7->{\includegraphics[width=0.35\textwidth]{design_space_exploration/load_cases_2.pdf}}%
+					};
+				\node [draw=black, line width=0.1mm, fill=white!20, inner sep=1pt,above left, opacity=1.0]  at (0.22\textwidth,-0.65\textheight) (manuA) 
+					{
+						\only<4->{\includegraphics[width=0.35\textwidth]{design_space_exploration/TEMP_GIF/frame_180.png}}%
+					};
+				% show origin
+				% \fill (0,0) circle (2pt);
+
+				\path (-3,-5) coordinate (B1 A)
+					  (-4.5,-8) coordinate (B3 A);
+
+			\end{tikzpicture}%
+			%
+		\end{column}
+	\end{columns}
+	
+	\vspace{-2em}
+\end{frame}
+\addtocounter{footnote}{-2}
+%------------------------------------------------

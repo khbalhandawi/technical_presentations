@@ -1,0 +1,28 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% preamble
+\newcommand{\scolor}{blue!30}
+\newcommand{\icolor}{red!30}
+\newcommand{\rcolor}{black!30}
+\newcommand{\fcolor}{black!70}
+\newcommand{\legendshift}{-3}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\ifnum \framel = 1
+    \renewcommand{\legendshift}{-0}
+\else
+    \renewcommand{\legendshift}{-3}
+\fi
+%
+\node[circle, minimum size = 10mm, fill=blue!30] (S) at (0+\legendshift,-0) {\Large \color{black} \textit{S}};
+\node[circle, minimum size = 10mm, fill=red!30] (I) at (4+\legendshift,-0) {\Large \color{black} \textit{I}};
+\node[circle, minimum size = 10mm, fill=black!30] (R) at (8+\legendshift,-0) {\Large \color{black} \textit{R}};
+\node[circle, minimum size = 10mm, fill=black!70] (F) at (12+\legendshift,-0) {\Large \color{white} \textit{F}};
+%
+\node[right, fill=white!70] at (S.east) {\Large susceptible};
+\node[right, fill=white!70] at (I.east) {\Large infected};
+\node[right, fill=white!70] at (R.east) {\Large recovered};
+\node[right, fill=white!70] at (F.east) {\Large fatality};
+%
+\ifnum \framel > 1
+    \node[diamond, minimum size = 12mm, fill=white!70, draw=black, line width=1 pt] (D) at (15+\legendshift,-0) {};
+    \node[right, fill=white!70] at (D.east) {\Large random event};
+\fi

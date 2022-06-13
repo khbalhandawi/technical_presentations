@@ -1,0 +1,27 @@
+\begin{lstlisting}[language=C]
+    __global__ void CUDA_GPU::calc_tracking_matrix(float* G, float* G_track, 
+        float* atoms_x, float* atoms_y, int n_grids, int N_rows, int N_cols)
+    {
+        int i(threadIdx.x + blockIdx.x * blockDim.x);
+        int j(threadIdx.y + blockIdx.y * blockDim.y);
+    
+        if (i >= N_rows || j >= N_cols) 
+        {
+            return;
+        }
+    
+        float g1 = (float)(j % n_grids) / float(n_grids);
+        float g2 = (float)(j / n_grids) / float(n_grids);
+        float g3 = (float)((j % n_grids) + 1) / float(n_grids);
+        float g4 = (float)((j / n_grids) + 1) / float(n_grids);
+    
+        bool check = (atoms_x[i] > g1) && (atoms_y[i] > g2) && (atoms_x[i] <= g3) && (atoms_y[i] <= g4);
+    
+        float t = (check) ? 1 : 0;
+        G[i + j * N_rows] += t; // update tracing matrix
+    
+        float track = (check) ? 1 : G_track[i + j * N_rows];
+        G_track[i + j * N_rows] = track; // update tracking matrix
+    
+    }
+\end{lstlisting}

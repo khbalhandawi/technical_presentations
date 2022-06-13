@@ -1,0 +1,20 @@
+\begin{lstlisting}[language=C]
+    __global__ void CUDA_GPU::calc_force_m(float* diffs_x, float* diffs_y, 
+        float* atoms_x, float* atoms_y, float SD_factor, int N)
+    {
+        int i(threadIdx.x + blockIdx.x * blockDim.x);
+        int j(threadIdx.y + blockIdx.y * blockDim.y);
+    
+        if (i >= N || j >= N) {
+            return;
+        }
+    
+        float distance = ((atoms_x[i] - atoms_x[j]) * (atoms_x[i] - atoms_x[j]) +
+            (atoms_y[i] - atoms_y[j]) * (atoms_y[i] - atoms_y[j]));
+        float distance3 = distance * distance * distance + 1e-15;
+    
+        diffs_x[i + N * j] = -SD_factor * (atoms_x[i] - atoms_x[j]) / distance3;
+    
+        diffs_y[i + N * j] = -SD_factor * (atoms_y[i] - atoms_y[j]) / distance3;
+    }
+\end{lstlisting}

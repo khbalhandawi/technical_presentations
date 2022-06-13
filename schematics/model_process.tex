@@ -1,0 +1,54 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% preamble
+\newcommand{\xshiftprocess}{0} 
+\newcommand{\yshiftprocess}{-2} 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\ifnum \framep < 4
+    \renewcommand{\yshiftprocess}{-3} 
+\else
+    \renewcommand{\yshiftprocess}{-2} 
+\fi
+%
+\node[circle, minimum size = 15mm, fill=\scolor] (Ss) at (0+\xshiftprocess,-0+\yshiftprocess) {\LARGE \color{black} \textit{S}};
+%
+\ifnum \framep > 2
+    \node[diamond, aspect=3, fill=white!70, draw=black, line width=1 pt] (contact) at (0+\xshiftprocess,-2.5+\yshiftprocess) {\LARGE made contact?};
+    \node[circle, minimum size = 15mm, fill=\icolor] (Is) at (0+\xshiftprocess,-5+\yshiftprocess) {\Large \color{black} \textit{I}};
+\else
+    \node[circle, minimum size = 15mm, fill=\icolor] (Is) at (0+\xshiftprocess,-4+\yshiftprocess) {\Large \color{black} \textit{I}};
+\fi
+%
+\ifnum \framep > 3
+    \node[diamond, aspect=2, fill=white!70, draw=black, line width=1 pt] (hospital) at (0+\xshiftprocess,-7.5+\yshiftprocess) {\LARGE hospitalized?};
+    \node[circle, minimum size = 15mm, fill=\rcolor] (Rs) at (-3+\xshiftprocess,-11+\yshiftprocess) {\Large \color{black} \textit{R}};
+    \node[circle, minimum size = 15mm, fill=\fcolor] (Fs) at (3+\xshiftprocess,-11+\yshiftprocess) {\Large \color{white} \textit{F}};
+\else
+    \node[circle, minimum size = 15mm, fill=\rcolor] (Rs) at (-2+\xshiftprocess,-8+\yshiftprocess) {\Large \color{black} \textit{R}};
+    \node[circle, minimum size = 15mm, fill=\fcolor] (Fs) at (2+\xshiftprocess,-8+\yshiftprocess) {\Large \color{white} \textit{F}};
+\fi
+%
+\ifnum \framep > 1
+    \path[-stealth,every node/.style={inner sep=2pt}]
+        \ifnum \framep > 2
+            (Ss) edge node [midway] {} (contact)
+            (contact) edge node [left=0.1cm] {$P_\mathrm{I}$} (Is)
+            {[out=0, in=0, looseness=2, fill=white] (Is) edge node [below=1cm] {$P_\mathrm{reinfect}$} (Ss)}
+        \else
+            (Ss) edge node [left=0.1cm] {$P_\mathrm{I}$} (Is)
+            {[out=0, in=0, looseness=1] (Is) edge node [right=0.1cm] {$P_\mathrm{reinfect}$} (Ss)}
+        \fi
+        %
+        \ifnum \framep > 3
+            {[out=270, in=90] (Is.south) edge node {} (hospital.north)}
+            %
+            {[out=270, in=90] (hospital.south) edge node [below] {$P_{\mathrm{R}|h}$} (Rs.north)}
+            {[out=270, in=90] (hospital.south) edge node [below] {$P_{\mathrm{F}|h}$} (Fs)}
+            %
+            {[out=180, in=90] (hospital.west) edge node [above left] {$P_{\mathrm{R}|h'}$} (Rs.north)}
+            {[out=0, in=90] (hospital.east) edge node [above right] {$P_{\mathrm{F}|h'}$} (Fs)}
+        \else
+            {[out=270, in=90] (Is.south) edge node [above left] {$P_\mathrm{R}$} (Rs.north)}
+            {[out=270, in=90] (Is) edge node [midway] [above right] {$P_\mathrm{F}$} (Fs)}
+        \fi
+    ;
+\fi

@@ -1,0 +1,149 @@
+\ifnum\frameopts < 2
+    \def\unit{1.25}
+    \def\meshsize{8}
+    \def\pollX{0}
+    \def\pollY{0}
+    \def\pollsize{4}
+    %
+    \def\pAX{-\pollsize/2}
+    \def\pAY{-1}
+    \def\pBX{\pollsize/2}
+    \def\pBY{\pollsize/2}
+    \def\pCX{\pollsize/2}
+    \def\pCY{-1}
+\fi
+%
+\ifnum\frameopts=0
+    \input{macros/poll_macros}
+    \node[circle, minimum size = 1mm, fill=red, label={[fill=white,above right,label distance=0.2cm]\huge $x_k$}] (center) at (\pollcenterX*\unit,\pollcenterY*\unit) {};
+    \node[circle, minimum size = 1mm, fill=red, label={[fill=white,below,label distance=-0.5cm]\huge $p_4$}] (p1) at (\pAcoordX*\unit,\pAcoordY*\unit) {};
+    \node[circle, minimum size = 1mm, fill=red, label={[fill=white,right,label distance=0.5cm]\huge $p_5$}] (p2) at (\pBcoordX*\unit,\pBcoordY*\unit) {};
+    \node[circle, minimum size = 1mm, fill=red, label={[fill=white]\huge $p_6$}] (p3) at (\pCcoordX*\unit,\pCcoordY*\unit) {};
+\fi
+%
+\ifnum\frameopts=1
+    \input{macros/poll_macros}
+    \node[align=center, minimum width = 100mm, above right] at (0,2) {\huge Poll \textbf{certain} \textbf{\color{red}failure}};
+    \node[star, star points=8, minimum size = 6mm, fill=blue, label={[fill=white,above right,label distance=0.2cm]\huge $x_k$}] (center) at (\pollcenterX*\unit,\pollcenterY*\unit) {};
+    \node[circle, minimum size = 1mm, fill=red, label={[fill=white,below,label distance=-0.5cm]\huge $p_4$}] (p1) at (\pAcoordX*\unit,\pAcoordY*\unit) {};
+    \node[circle, minimum size = 1mm, fill=red, label={[fill=white,right,label distance=0.5cm]\huge $p_5$}] (p2) at (\pBcoordX*\unit,\pBcoordY*\unit) {};
+    \node[circle, minimum size = 1mm, fill=red, label={[fill=white]\huge $p_6$}] (p3) at (\pCcoordX*\unit,\pCcoordY*\unit) {};
+    \node[circle, minimum size = 1.41*\unit*20mm, fill=blue, opacity=0.5] (uncertainty) at (\pollcenterX*\unit,\pollcenterY*\unit) {};
+\fi
+%
+\ifnum\frameopts < 3
+    \def\unit{0.3125}
+    \def\meshsize{32}
+    \def\pollX{0}
+    \def\pollY{0}
+    \def\pollsize{8}
+    %
+    \def\pAX{-\pollsize/2}
+    \def\pAY{-3}
+    \def\pBX{3}
+    \def\pBY{\pollsize/2}
+    \def\pCX{\pollsize/2}
+    \def\pCY{-\pollsize/2}
+\fi
+%
+\ifnum\frameopts=2
+    \input{macros/poll_macros}
+    \node[align=center, minimum width = 100mm, above right] at (0,2) {\huge Poll \textbf{certain} \textbf{\color{red}failure}};
+    \node[star, star points=8, minimum size = 6mm, fill=blue, label={[fill=white,above right,label distance=0.2cm]\huge $x_k$}] (center) at (\pollcenterX*\unit,\pollcenterY*\unit) {};
+    \node[circle, minimum size = 1mm, fill=red, label={[fill=white,below,label distance=-0.5cm]\huge $p_7$}] (p1) at (\pAcoordX*\unit,\pAcoordY*\unit) {};
+    \node[circle, minimum size = 1mm, fill=red, label={[fill=white,right,label distance=0.5cm]\huge $p_8$}] (p2) at (\pBcoordX*\unit,\pBcoordY*\unit) {};
+    \node[circle, minimum size = 1mm, fill=red, label={[fill=white]\huge $p_9$}] (p3) at (\pCcoordX*\unit,\pCcoordY*\unit) {};
+    \node[circle, minimum size = 1.41*\unit*20mm, fill=blue, opacity=0.5] (uncertainty) at (\pollcenterX*\unit,\pollcenterY*\unit) {};
+\fi
+\ifnum\frameopts < 5
+    \def\unit{1.25}
+    \def\meshsize{8}
+    \def\pollX{0}
+    \def\pollY{0}
+    \def\pollsize{4}
+    %
+    \def\pAX{-\pollsize/2}
+    \def\pAY{-1}
+    \def\pBX{\pollsize/2}
+    \def\pBY{\pollsize/2}
+    \def\pCX{\pollsize/2}
+    \def\pCY{-1}
+\fi
+%
+\ifnum\frameopts=3
+    \input{macros/poll_macros}
+    \node[align=center, minimum width = 100mm, above right] at (0,2) {\huge Poll \textbf{certain} \textbf{\color{red}failure}};
+    \node[star, star points=8, minimum size = 6mm, fill=blue, label={[fill=white,above right,label distance=0.2cm]\huge $x_k$}] (center) at (\pollcenterX*\unit,\pollcenterY*\unit) {};
+    \node[circle, minimum size = 1mm, fill=red, label={[fill=white,below,label distance=-0.5cm]\huge $p_4$}] (p1) at (\pAcoordX*\unit,\pAcoordY*\unit) {};
+    \node[circle, minimum size = 1mm, fill=red, label={[fill=white,right,label distance=0.5cm]\huge $p_5$}] (p2) at (\pBcoordX*\unit,\pBcoordY*\unit) {};
+    \node[circle, minimum size = 1mm, fill=red, label={[fill=white]\huge $p_6$}] (p3) at (\pCcoordX*\unit,\pCcoordY*\unit) {};
+    \node[circle, minimum size = 1.41*\unit*20mm, fill=blue, opacity=0.5] (uncertainty) at (\pollcenterX*\unit,\pollcenterY*\unit) {};
+\fi
+%
+\ifnum\frameopts=4
+    \input{macros/poll_macros}
+    \node[align=center, minimum width = 100mm, above right] at (0,2) {\huge Poll \textbf{uncertain} \textbf{\color{red}failure}};
+    \node[star, star points=8, minimum size = 6mm, fill=blue, label={[fill=white,above right,label distance=0.2cm]\huge $x_k$}] (center) at (\pollcenterX*\unit,\pollcenterY*\unit) {};
+    \node[circle, minimum size = 1mm, fill=red, label={[fill=white,below,label distance=-0.5cm]\huge $p_4$}] (p1) at (\pAcoordX*\unit,\pAcoordY*\unit) {};
+    \node[circle, minimum size = 1mm, fill=red, label={[fill=white,right,label distance=0.5cm]\huge $p_5$}] (p2) at (\pBcoordX*\unit,\pBcoordY*\unit) {};
+    \node[circle, minimum size = 1mm, fill=red, label={[fill=white]\huge $p_6$}] (p3) at (\pCcoordX*\unit,\pCcoordY*\unit) {};
+    \node[circle, minimum size = 2*1.21*\unit*20mm, fill=blue, opacity=0.5] (uncertainty) at (\pollcenterX*\unit,\pollcenterY*\unit) {};
+\fi
+%
+\ifnum\frameopts < 6
+    \def\unit{0.625}
+    \def\meshsize{16}
+    \def\pollX{0}
+    \def\pollY{0}
+    \def\pollsize{6}
+    %
+    \def\pAX{-\pollsize/2}
+    \def\pAY{-1}
+    \def\pBX{\pollsize/2}
+    \def\pBY{\pollsize/2}
+    \def\pCX{\pollsize/2}
+    \def\pCY{-1}
+\fi
+%
+\ifnum\frameopts=5
+    \input{macros/poll_macros}
+    \node[align=center, minimum width = 100mm, above right] at (0,2) {\huge Poll \textbf{uncertain} \textbf{\color{red}failure}};
+    \node[star, star points=8, minimum size = 6mm, fill=blue, label={[fill=white,above right,label distance=0.2cm]\huge $x_k$}] (center) at (\pollcenterX*\unit,\pollcenterY*\unit) {};
+    \node[circle, minimum size = 1mm, fill=red, label={[fill=white,below,label distance=-0.5cm]\huge $p_7$}] (p1) at (\pAcoordX*\unit,\pAcoordY*\unit) {};
+    \node[circle, minimum size = 1mm, fill=red, label={[fill=white,right,label distance=0.5cm]\huge $p_8$}] (p2) at (\pBcoordX*\unit,\pBcoordY*\unit) {};
+    \node[circle, minimum size = 1mm, fill=red, label={[fill=white]\huge $p_9$}] (p3) at (\pCcoordX*\unit,\pCcoordY*\unit) {};
+    \node[circle, minimum size = 2.5*1.41*\unit*20mm, fill=blue, opacity=0.5] (uncertainty) at (\pollcenterX*\unit,\pollcenterY*\unit) {};
+\fi
+%
+\ifnum\frameopts < 7
+    \def\unit{0.3125}
+    \def\meshsize{32}
+    \def\pollX{0}
+    \def\pollY{0}
+    \def\pollsize{8}
+    %
+    \def\pAX{-\pollsize/2}
+    \def\pAY{-1}
+    \def\pBX{\pollsize/2}
+    \def\pBY{\pollsize/2}
+    \def\pCX{\pollsize/2}
+    \def\pCY{-1}
+\fi
+%
+\ifnum\frameopts=6
+    \input{macros/poll_macros}
+    \node[align=center, minimum width = 100mm, above right] at (0,2) {\huge Poll \textbf{certain} \textbf{\color{red}failure}};
+    \node[star, star points=8, minimum size = 6mm, fill=blue, label={[fill=white,above right,label distance=0.2cm]\huge $x_k$}] (center) at (\pollcenterX*\unit,\pollcenterY*\unit) {};
+    \node[circle, minimum size = 1mm, fill=red] (p1) at (\pAcoordX*\unit,\pAcoordY*\unit) {};
+    \node[circle, minimum size = 1mm, fill=red] (p2) at (\pBcoordX*\unit,\pBcoordY*\unit) {};
+    \node[circle, minimum size = 1mm, fill=red] (p3) at (\pCcoordX*\unit,\pCcoordY*\unit) {};
+    \node[circle, minimum size = 2.5*1.41*\unit*20mm, fill=blue, opacity=0.5] (uncertainty) at (\pollcenterX*\unit,\pollcenterY*\unit) {};
+\fi
+%
+\draw[-, color=red, line width=2pt, opacity=1.0] (center) -- (p1);
+\draw[-, color=red, line width=2pt, opacity=1.0] (center) -- (p2);
+\draw[-, color=red, line width=2pt, opacity=1.0] (center) -- (p3);
+%
+\node[align=center, minimum width = 100mm, above right] (ulabel) at (0,-12) {\huge $\left\{x:f^k_s - f^k_0 \in \mathcal{I}\right\}$};
+%
+\path[stealth-,blue!70,line width = 3pt] (uncertainty.south) edge [out=290, in=70] (ulabel.north);

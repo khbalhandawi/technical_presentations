@@ -1,0 +1,53 @@
+% https://tex.stackexchange.com/a/183633
+\newcommand{\Grid}[6]{%
+    \def\startX{#1}
+    \def\startY{#2}
+    \def\maxX{#3}
+    \def\maxY{#4}
+    \def\size{#5}
+    \def\borderthick{#6}
+    %
+    \draw[line width=\borderthick] (\size*0+\startX,\size*0+\startY) rectangle (\size*\maxX+\startX,\size*-\maxY+\startY);
+    \foreach \x in {0,1,...,\maxX}{
+        \draw (\size*\x+\startX,\size*0+\startY) -- (\size*\x+\startX,\size*-\maxY+\startY);
+    }
+    %
+    \foreach \y in {0,1,...,\maxY}{
+        \draw (\size*0+\startX,\size*-\y+\startY) -- (\size*\maxX+\startX,\size*-\y+\startY);
+    }
+}
+%
+\pgfmathsetmacro{\centerX}{\meshsize/2}
+\pgfmathsetmacro{\centerY}{-\meshsize/2}
+%
+\pgfmathsetmacro{\pollcenterX}{\centerX+\pollX}
+\pgfmathsetmacro{\pollcenterY}{\centerY+\pollY}
+\pgfmathsetmacro{\pollcornerX}{\pollcenterX - \pollsize/2}
+\pgfmathsetmacro{\pollcornerY}{\pollcenterY + \pollsize/2}
+%
+\pgfmathsetmacro{\pAcoordX}{\pollcenterX + \pAX}
+\pgfmathsetmacro{\pAcoordY}{\pollcenterY - \pAY}
+\pgfmathsetmacro{\pBcoordX}{\pollcenterX + \pBX}
+\pgfmathsetmacro{\pBcoordY}{\pollcenterY - \pBY}
+\pgfmathsetmacro{\pCcoordX}{\pollcenterX + \pCX}
+\pgfmathsetmacro{\pCcoordY}{\pollcenterY - \pCY}
+%
+\pgfmathsetmacro{\deltameshn}{\pollcenterX-\pollcornerX}
+\pgfmathsetmacro{\deltameshd}{\centerX}
+\pgfmathsetmacro{\deltamesh}{(\pollcenterX-\pollcornerX)/\centerX}
+\pgfmathsetmacro{\deltaframen}{\deltameshn * \deltameshn}
+\pgfmathsetmacro{\deltaframed}{\deltameshd * \deltameshd}
+\pgfmathsetmacro{\deltaframe}{\deltamesh * \deltamesh}
+%
+\Grid{0}{0}{\meshsize}{\meshsize}{\unit}{1pt}
+\Grid{\pollcornerX*\unit}{\pollcornerY*\unit}{\pollsize}{\pollsize}{\unit}{3pt}
+%
+\ifdim \deltamesh pt = 1 pt
+    \dimline[label style={above=0.5ex,}, line style = {line width=0.7},extension start length=+0.3,extension end length=+0.3] {(\pollcornerX*\unit,1)}{(\pollcenterX*\unit,1)}{\huge $\delta^{k}_\mathrm{poll}=1$};
+    
+    \dimline[label style={above=0.5ex,}, line style = {line width=0.7},extension start length=+0.3,extension end length=+0.3] {(\meshsize*\unit - 1*\unit,1)}{(\meshsize*\unit,1)}{\huge $\delta^{k}_\mathrm{mesh}=1$};
+\else
+    \dimline[label style={above=0.5ex,}, line style = {line width=0.7},extension start length=+0.3,extension end length=+0.3] {(\pollcornerX*\unit,0.5)}{(\pollcenterX*\unit,0.5)}{\huge $\delta^{k}_\mathrm{poll}=\addfraction{\deltameshn}{\deltameshd}$};
+    
+    \dimline[label style={above=0.5ex,}, line style = {line width=0.7},extension start length=+0.3,extension end length=+0.3] {(\meshsize*\unit - 1*\unit,0.5)}{(\meshsize*\unit,0.5)}{\huge $\delta^{k}_\mathrm{mesh}=\addfraction{\deltaframen}{\deltaframed}$};
+\fi

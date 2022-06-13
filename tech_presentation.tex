@@ -1,0 +1,368 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Beamer Presentation
+% LaTeX Template
+% Version 1.0 (10/11/12)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND THEMES
+%----------------------------------------------------------------------------------------
+
+\documentclass[aspectratio=169]{beamer}
+
+\mode<presentation> {
+
+
+\definecolor{LightBlue}{RGB}{93,111,122}
+\definecolor{TitleCopper}{RGB}{0,108,92}
+\definecolor{emphasis}{RGB}{212,0,0}
+\definecolor{darkgreen}{rgb}{0,0.5,0}
+% The Beamer class comes with a number of default slide themes
+% which change the colors and layouts of slides. Below this is a list
+% of all the themes, uncomment each in turn to see what they look like.
+
+\usetheme{Madrid}
+% Change base colour beamer@blendedblue (originally RGB: 0.2,0.2,0.7)
+\colorlet{beamer@blendedblue}{red!80!black}
+
+% As well as themes, the Beamer class has a number of color themes
+% for any slide theme. Uncomment each of these in turn to see how it
+% changes the colors of your current slide theme.
+
+%\setbeamertemplate{footline} % To remove the footer line in all slides uncomment this line
+%\setbeamertemplate{footline}[page number] % To replace the footer line in all slides with a simple slide count uncomment this line
+
+%\setbeamertemplate{navigation symbols}{} % To remove the navigation symbols from the bottom of all slides uncomment this line
+}
+
+\newcommand\Fontvi{\fontsize{10}{10}\selectfont}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert_2}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand\emphasis[1]{{\textbf{\color{emphasis}#1}}}
+
+% Toggle animations on or off for faster build times
+\newif\ifshowanimations
+\showanimationstrue
+% \showanimationsfalse
+
+% Toggle animations on or off for faster build times
+\newif\ifshowcitations
+\showcitationstrue
+% \showcitationsfalse
+
+% for zero-padded image numbers inside animations
+\newcommand\zeropad[2]{%
+  \ifnum#2<0\relax%
+    {\ensuremath-}\zeropadA{#1}{\the\numexpr#2*-1\relax}%
+  \else%
+    \zeropadA{#1}{#2}%
+  \fi%
+}
+\def\zeropadA#1#2{%
+  \ifnum1#2<1#1
+    \zeropadA{#1}{0#2}%
+  \else%
+    #2%
+  \fi%
+}
+
+%==============================================================================%
+%% Bibliography settings
+\ifshowcitations
+	\usepackage[backend=biber,autocite=footnote,citestyle=authoryear,style=mla]{biblatex}
+
+	\newcommand*{\volnumpunct}{\addcomma\space}
+	\renewcommand*{\newunitpunct}{\addcomma\space}
+	\renewcommand*{\subtitlepunct}{\nopunct\space}
+	\renewcommand*{\intitlepunct}{\nopunct\addspace}
+	\renewcommand*{\relatedpunct}{\addsemicolon\space}
+	\renewcommand*{\finentrypunct}{} 
+
+	\renewcommand*{\bibfootnotewrapper}[1]{\bibsentence #1} % remove final period
+
+	\DeclareCiteCommand{\footpartcite}[\mkbibfootnote]{
+		{
+			\boolfalse{citetracker} % not sure if this helps
+			\usebibmacro{prenote}
+		}%
+		{\usebibmacro{citeindex}%
+			\setunit{\addcomma}
+			% \printnames{labelname}%
+			% \setunit{\labelnamepunct}
+			\printnames[default]{author} % default ordering first name, last name
+			\newunit
+			\printfield{year}
+			\newunit
+			{\color{emphasis}\printfield{journaltitle}}
+		}
+		{\usebibmacro{postnote}}
+		\vspace{-1.5em}
+	}
+
+	\AtEveryCitekey{\iffootnote{\color{emphasis}\tiny}{\color{blue}}}
+
+	\makeatletter
+	\renewcommand\@makefnmark{\textsuperscript{\@thefnmark}} % suppress ref mark
+	\renewcommand\@makefntext[1]{\tiny\noindent{[\@thefnmark]}#1} % smaller font size
+	\makeatother
+
+	\addbibresource{bibliography.bib}
+	% \bibliography{\jobname.bib}
+	% \renewcommand*{\thefootnote}{\alph{footnote}} % alpha footnotes
+\fi
+%==============================================================================%
+%% Footer formatting
+
+\setbeamertemplate{footline}
+{
+	\leavevmode%
+	\hbox{%
+	\begin{beamercolorbox}[wd=.2\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+	\usebeamerfont{author in head/foot}\insertshortauthor
+	\end{beamercolorbox}%
+	\begin{beamercolorbox}[wd=.6\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+	\usebeamerfont{title in head/foot}{\href{https://khbalhandawi.github.io/}{https://khbalhandawi.github.io/}}
+	\end{beamercolorbox}%
+	\begin{beamercolorbox}[wd=.2\paperwidth,ht=2.25ex,dp=1ex,center]{date in head/foot}%
+	\insertdate~~\insertframenumber{} / \inserttotalframenumber\hspace*{1ex}
+	\end{beamercolorbox}}%
+	\vskip0pt%
+}
+
+\usepackage{textpos}
+\addtobeamertemplate{frametitle}{}{%
+	\begin{textblock*}{100mm}(.94\textwidth,-1.1cm)
+		\colorbox{white}{\includegraphics[height=1.2cm]{logos/mcgill_logo.pdf}}
+	\end{textblock*}
+}
+
+%==============================================================================%
+%% Reduce TOC spacing
+
+\makeatletter
+\patchcmd{\beamer@sectionintoc}{\vskip1.5em}{\vskip0.5em}{}{}
+\makeatother
+
+%==============================================================================%
+%% Good behaving itemize env with top aligned columns
+
+\makeatletter
+\newenvironment{myitemize}{%
+   \setlength{\topsep}{0pt}
+   \setlength{\partopsep}{0pt}
+   \renewcommand*{\@listi}{\leftmargin\leftmargini \parsep\z@ \topsep\z@ \itemsep\z@}
+   \let\@listI\@listi
+   \itemize
+}{\enditemize}
+\makeatother  
+
+%==============================================================================%
+%% Imported packages
+
+\usepackage{changepage} % adjust slide margins
+\usepackage{graphicx} % Allows including images
+\usepackage{animate} % For animated images
+\graphicspath{ {Images/} }
+\usepackage{tikz}
+\usepackage{tikz-dimline}
+\usetikzlibrary{calc,fadings,positioning,arrows,shapes,backgrounds,shapes.geometric,arrows.meta}
+\tikzfading[name=fade r,right color=transparent!100,left color=transparent!0]
+\tikzstyle{every picture}+=[remember picture]
+\tikzstyle{na} = [baseline=-.5ex]
+% this "frames" a rectangle node
+\newcommand\framenode[2][10pt]{
+    \fill[white,path fading=fade r] (#2.south west) rectangle ($(#2.north west)+( #1,0)$);
+}
+\newcommand{\fixedpicture}[4]{ % height, content
+    \node (TRSschematic) at ( [xshift = #1, yshift = #2] current page.center) %or: (current page.west
+	{\includegraphics[height=#3]{#4}};
+}
+\newcommand{\tikzmark}[3][]{\tikz[remember picture,baseline] \node [anchor=base,#1](#2) {$#3$};}
+
+\usepackage{algorithmic}
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e} % for algorithms
+
+
+ % code snippets
+\usepackage{listings}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\tiny,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=1pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+	aboveskip=0.0em,
+    belowskip=0.0em
+}
+\lstset{style=mystyle}
+
+\usepackage{tabularx}
+\usepackage{multirow}% tables
+\usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+\usepackage{lmodern} % load a font with all the characters
+\usepackage{amssymb}
+\usepackage{amsmath}
+%\usepackage{unicode-math}
+\usepackage{cmbright}
+\usepackage{kbordermatrix}% http://www.hss.caltech.edu/~kcb/TeX/kbordermatrix.sty
+%\SetSymbolFont{largesymbols}{normal}{OMX}{iwona}{m}{n}
+
+\usepackage{cleveref}% reference multiple equations
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{enumitem} % tick and cross bullet points
+\usepackage{amsfonts}
+\usepackage{ragged2e} % justify text
+\usepackage{multido} % loop over i images
+\usepackage{array} % for tables 
+\usepackage{varwidth} % for bullets inside tikz nodes
+\usepackage{fancybox} % for rounded boxes
+\usepackage{xstring} % for string lookup functions 
+
+\usepackage{pifont} % for ding commands
+\newcommand{\cmark}{\ding{51}} % for check marks
+\newcommand{\xmark}{\ding{55}} % for cross marks
+\usepackage{bbding,enumitem} % tick and cross bullet points
+
+\newlength{\mytextsize} % fontsize length for animations inline
+%This part fails.... 
+\makeatletter
+	\setlength{\mytextsize}{\f@size pt}
+\makeatother
+
+\setitemize{label=\usebeamerfont*{itemize item}% Restore original beamer style
+\usebeamercolor[fg]{itemize item}
+\usebeamertemplate{itemize item}}
+
+\setbeamerfont{block body}{size=\scriptsize}
+\setbeamerfont{block body alerted}{size=\scriptsize}
+\setbeamerfont{block body example}{size=\scriptsize}
+\captionsetup{textfont={scriptsize,it},labelformat=empty,labelsep=none}
+\usepackage{multicol} % multiple columns for itemize lists
+
+% INTEGRATED PROBLEM BLOCK %
+\setbeamercolor{block title}{fg=white,bg=blue}
+\setbeamercolor{block body}{fg=black, bg=blue!20!white}
+
+% INTEGRATED PROBLEM BLOCK %
+\setbeamercolor{block title}{fg=white,bg=blue}
+\setbeamercolor{block body}{fg=black, bg=blue!20!white}
+
+% INTEGRATED PROBLEM BLOCK %
+\newenvironment<>{blueblock}[1]{%
+\setbeamercolor{itemize item}{fg=blue}
+\setbeamercolor{block title}{fg=white,bg=blue}
+\setbeamercolor{block body}{fg=black, bg=blue!20!white}
+	\begin{block}#2{#1}}{\end{block}}
+
+% TITLE BLOCK %
+\newenvironment<>{titleblock}[1]{%
+\setbeamercolor{block title}{fg=black,bg=red!20!white}
+\setbeamercolor{block body}{fg=black, bg=red!20!white}
+	\begin{block}#2{#1}}{\end{block}}
+
+% well behaved centering environment
+\newenvironment{nscenter}
+ {\parskip=0pt\par\nopagebreak\centering}
+ {\par\noindent\ignorespacesafterend}
+
+% Image scales and sizes
+\newlength\imagewidth
+\newlength\imagescale
+\pgfmathsetlength{\imagewidth}{6cm}
+\pgfmathsetlength{\imagescale}{\imagewidth/600}
+
+\input{macros/fraction_macros}
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\title[]{Overview of my research and related software packages} % The short title appears at the bottom of every slide, the full title is only on the title page
+
+\author[K. Al Handawi]{Khalil Al Handawi, PhD} % Your name
+
+\institute[McGill]% Your institution as it will appear on the bottom of every slide, may be shorthand to save space
+{
+	~\\
+	\textit{\small
+	Technical presentation\\} % Your institution for the title page
+}
+\date{\today} % Date, can be changed to a custom date
+
+\begin{document}
+
+\begin{frame}
+	\begin{tikzpicture}[remember picture,overlay]
+	\node[opacity=0.9] (image) at
+		([xshift=-0.125\textwidth, yshift =-1cm]current page.east) 	%or: (current page.center)
+		{\includegraphics[height=1.6\textheight]{logos/mcgill_logo.pdf}};
+		\framenode[600pt]{image}
+\end{tikzpicture}
+
+\titlepage % Print the title page as the first slide
+\end{frame}
+
+%----------------------------------------------------------------------------------------
+% \begin{frame}
+% \frametitle{Overview} % Table of contents slide, comment this block out to remove it
+% \tableofcontents[hideallsubsections] % Throughout your presentation, if you choose to use \section{} and \subsection{} commands, these will automatically be printed on this slide as an overview of your presentation
+% \end{frame}
+%----------------------------------------------------------------------------------------
+
+%----------------------------------------------------------------------------------------
+%	PRESENTATION SLIDES
+%----------------------------------------------------------------------------------------
+
+% Section 00: Introduction
+\include{KA_introduction}
+
+% Section 01: gent based model
+\include{1_abm_work}
+
+% \includeonlyframes{abm_2}
+% Section 02: machine learning work
+\include{2_machine_learning}
+
+% Section 03: Design space exploration
+\include{3_dse_work}
+
+%------------------------------------------------
+\begin{frame}
+	\centering
+	\Huge \emphasis{Thank you for your time}
+\end{frame}
+%------------------------------------------------
+
+% Supplementary slides
+\include{supplementary}
+
+%----------------------------------------------------------------------------------------
+
+\end{document} 

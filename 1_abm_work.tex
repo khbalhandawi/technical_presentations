@@ -1,0 +1,634 @@
+
+%------------------------------------------------
+\section{Optimization of stochastic agent-based models}
+%------------------------------------------------
+\begin{frame}[c,noframenumbering]
+	\centering
+	% \setlength\fboxsep{0pt}
+	\begin{titleblock}{}
+		~\\%
+		{\centering\LARGE Optimization of public health models using artificial life models\\}%
+		~\\%
+	\end{titleblock}
+\end{frame}
+%------------------------------------------------
+\subsection{Background on epidemiological models}
+%------------------------------------------------
+\begin{frame}[t,label=abm_1]
+	\frametitle{Background: epidemiological models}
+	\tikzstyle{background grid}=[draw, black!50,step=.5cm]
+	%
+	What are compartmental epidemiological models?\\
+	%
+	\begin{columns}[t] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+		\begin{column}{.4\textwidth} % Left column and width
+			\small
+			\only<-6>{
+				\begin{itemize}
+					\uncover<2->{\item Described by a \emph{stochastic} process}%
+					\uncover<4->{\item Assumes \emph{homogenous} interaction}
+					\uncover<5->{\item Deterministic response for large $N$}
+				\end{itemize}
+				%
+				\uncover<6->{
+					\begin{equation*}
+						\label{eq:SIRodes}
+						\begin{aligned}
+							&{\frac {dS}{dt}}=-{\frac {\beta IS}{N}},\\[6pt]
+							&{\frac {dI}{dt}}={\frac {\beta IS}{N}}-\gamma I,\\[6pt]
+							&{\frac {dR}{dt}}=\gamma I,
+						\end{aligned}
+					\end{equation*}
+					{\scriptsize where $N = S + I + R$, $\beta$ controls infection spread, and $\gamma$ controls recovery rate}
+				}%
+			}%
+			\only<7->{
+				\begin{itemize}
+					\item[\color{darkgreen} \ding{51}]<7-> Analytical solutions are available
+					\item[\color{darkgreen} \ding{51}]<8-> Captures large-scale population dynamics
+					\item[\color{red} \ding{56}]<9-> Does not account for \emph{geography}
+					\item[\color{red} \ding{56}]<10-> Cannot model effect of intervention policies
+				\end{itemize}
+			}%
+			%
+		\end{column}
+		%
+		\begin{column}{.6\textwidth} % Left column and width
+
+			\only<1>{
+				\def\framel{1}
+				\def\framep{1}
+				\def\frameabm{1}
+			}%
+			\only<2>{
+				\def\framel{1}
+				\def\framep{2}
+				\def\frameabm{1}
+			}%
+			\only<3>{
+				\def\framel{1}
+				\def\framep{2}
+				\def\frameabm{1}
+			}%
+			\only<4-8>{
+				\def\framel{1}
+				\def\framep{2}
+				\def\frameabm{2}
+			}%
+			\only<9->{
+				\def\framel{1}
+				\def\framep{2}
+				\def\frameabm{3}
+			}%
+
+			\tikzstyle{background grid}=[draw, black!50,step=.1cm]
+			\hspace*{5em}\raisebox{1em}{%
+				\begin{tikzpicture}[scale=0.45, every node/.style={scale=0.45}, remember picture, overlay] %show background grid, 
+						\input{schematics/legend}
+						\input{schematics/model_process}
+						\only<3->{\input{schematics/agent_based_model}}
+				\end{tikzpicture}%
+			}%
+			\begin{tikzpicture}[remember picture, overlay] %show background grid, 
+				\node [inner sep=0pt,above right, opacity=1.0]  at (-0.13\textwidth,-0.66\textheight) (seir) 
+					{
+						\only<6>{\includegraphics[width=0.9\textwidth]{agent_based_models/SIR_example.pdf}}%
+					};
+			\end{tikzpicture}%
+		\end{column}
+
+	\end{columns}
+	\vspace{-3em}
+\end{frame}
+%------------------------------------------------
+\begin{frame}[t,label=abm_2]
+	\frametitle{Background: epidemiological models}
+	\tikzstyle{background grid}=[draw, black!50,step=.5cm]
+	%
+	What are agent-based epidemiological models?\\
+	%
+	\begin{columns}[t] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+		\begin{column}{.4\textwidth} % Left column and width
+			\small
+			\only<-12>{
+				\begin{itemize}
+					\uncover<2->{\item \emph{Stochastic} process}%
+					\uncover<3->{\item Assume \emph{heterogenous} interaction}
+					\uncover<5-12>{\item Stochastic response}
+				\end{itemize}
+			}%
+			\only<13->{
+				\begin{itemize}
+					\item[\color{darkgreen} \ding{51}]<13-> Account for \emph{geography} and \emph{demographics}
+					\item[\color{darkgreen} \ding{51}]<14-> Describe local phenomena
+					\item[\color{darkgreen} \ding{51}]<15-> Can be used to model intervention policies
+					\item[\color{red} \ding{56}]<16-> Stochastic response makes decision making challenging
+					\item[\color{red} \ding{56}]<17-> Computationally expensive
+				\end{itemize}
+			}%
+			%
+		\end{column}
+		%
+		\begin{column}{.6\textwidth} % Left column and width
+
+			\only<1>{
+				\def\framel{1}
+				\def\framep{2}
+				\def\frameabm{1}
+			}%
+			\only<2>{
+				\def\framel{2}
+				\def\framep{3}
+				\def\frameabm{1}
+			}%
+			\only<3>{
+				\def\framel{2}
+				\def\framep{3}
+				\def\frameabm{4}
+			}%
+			\only<4-14>{
+				\def\framel{2}
+				\def\framep{3}
+				\def\frameabm{5}
+			}%
+			\only<15->{
+				\def\framel{2}
+				\def\framep{4}
+				\def\frameabm{6}
+			}%
+			\tikzstyle{background grid}=[draw, black!50,step=.1cm]
+			\only<-4,13->{
+				\hspace*{5em}\raisebox{1em}{%
+					\begin{tikzpicture}[scale=0.45, every node/.style={scale=0.45}, remember picture, overlay] %show background grid, 
+							\input{schematics/legend}
+							\input{schematics/model_process}
+							\input{schematics/agent_based_model}
+					\end{tikzpicture}%
+				}%
+			}%
+			%
+			\begin{tikzpicture}[remember picture, overlay] %show background grid, 
+				\node [inner sep=0pt,above right, opacity=1.0]  at (0.1\textwidth,-0.66\textheight) (abm) 
+					{
+						\only<5>{
+							\begin{animateinline}[autoplay,width=0.9\textwidth]{60}
+								\ifshowanimations
+									\multiframe{77}{i=5+45}{%
+										\includegraphics{agent_based_models/render_demo_1_realization_1_anim/sim_\i.pdf}
+									}
+								\else
+									\multiframe{1}{i=3500+0}{%
+										\includegraphics{agent_based_models/render_demo_1_realization_1/sim_\i.pdf}
+									}
+								\fi
+							\end{animateinline}%
+						}%
+						\only<6>{
+							\begin{animateinline}[autoplay,width=0.9\textwidth]{60}
+								\ifshowanimations
+									\multiframe{77}{i=5+45}{%
+										\includegraphics{agent_based_models/render_demo_1_realization_2_anim/sim_\i.pdf}
+									}
+								\else
+									\multiframe{1}{i=3500+0}{%
+										\includegraphics{agent_based_models/render_demo_1_realization_2/sim_\i.pdf}
+									}
+								\fi
+							\end{animateinline}%
+						}%
+					};
+				\only<5>{\node[inner sep=0pt,align=flush center,above=\belowcaptionskip of abm,text width=\linewidth]
+					{\vspace{-1em}{\large Realization 1}};}%
+				\only<6>{\node[inner sep=0pt,align=flush center,above=\belowcaptionskip of abm,text width=\linewidth]
+					{\vspace{-1em}{\large Realization 2}};}%
+				%
+				\node [inner sep=0pt,above right, opacity=1.0]  at (0.1\textwidth,-0.69\textheight) (trajectory) 
+				{
+					\only<7>{\includegraphics[width=0.85\textwidth]{agent_based_models/realization_traces/I_compare_R_0.pdf}}%
+					\only<8>{\includegraphics[width=0.85\textwidth]{agent_based_models/realization_traces/I_compare_R_1.pdf}}%
+					\only<9>{\includegraphics[width=0.85\textwidth]{agent_based_models/realization_traces/I_compare_R_2.pdf}}%
+					\only<10>{\includegraphics[width=0.85\textwidth]{agent_based_models/realization_traces/I_compare_R_3.pdf}}%
+					\only<11>{\includegraphics[width=0.85\textwidth]{agent_based_models/realization_traces/I_compare_R_4.pdf}}%
+					\only<12>{\includegraphics[width=0.85\textwidth]{agent_based_models/realization_traces/I_compare_opt_0.pdf}}%
+				};
+				\only<7>{\node[inner sep=0pt,align=flush center,above=\belowcaptionskip of trajectory,text width=\linewidth]
+					{\vspace{-1em}{\large Realization 1}};}%
+				\only<8>{\node[inner sep=0pt,align=flush center,above=\belowcaptionskip of trajectory,text width=\linewidth]
+					{\vspace{-1em}{\large Realization 2}};}%
+			\end{tikzpicture}%
+		\end{column}
+
+	\end{columns}
+	\vspace{-3em}
+\end{frame}
+%------------------------------------------------
+\subsection{Public health policy-making problem}
+%------------------------------------------------
+\begin{frame}[t,label=abm_3]
+	\frametitle{Public health policy-making problem formulation}
+	\tikzstyle{background grid}=[draw, black!50,step=.5cm]
+	%
+	What is the \emphasis{cost} of public health interventions?\\
+	%
+	\begin{columns}[t] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+		\begin{column}{.5\textwidth} % Left column and width
+
+			\begin{tikzpicture}[remember picture, overlay] %show background grid, 
+				\node [inner sep=0pt,above right, opacity=1.0]  at (0.0\textwidth,-0.66\textheight) (abm) 
+					{
+						\only<-5>{
+							\includegraphics[width=0.95\textwidth]{agent_based_models/render_2_no_restrictions/sim_10.pdf}
+						}%	
+						\only<6>{
+							\begin{animateinline}[autoplay,width=0.95\textwidth]{70}
+								\ifshowanimations
+									\multiframe{77}{i=10+45}{%
+										\includegraphics{agent_based_models/render_2_no_restrictions_anim/sim_\i.pdf}
+									}
+								\else
+									\multiframe{1}{i=10+0}{%
+										\includegraphics{agent_based_models/render_2_no_restrictions/sim_\i.pdf}
+									}
+								\fi
+							\end{animateinline}%
+						}%
+						\only<7>{
+							\includegraphics[width=0.95\textwidth]{agent_based_models/render_2_no_restrictions/sim_3500.pdf}
+						}%
+					};
+				\only<1-7>{\node[inner sep=0pt,align=flush center,above=\belowcaptionskip of abm,text width=\linewidth]
+					{\vspace{-1em}{\large No interventions applied}};}%
+				%
+				\node [inner sep=0pt,above right, opacity=1.0]  at (0.0\textwidth,-0.69\textheight) (infection) 
+				{
+					\only<8>{\includegraphics[width=0.9\textwidth]{agent_based_models/trajectory_demo/I_compare_opt_1.pdf}}%
+					\only<9>{\includegraphics[width=0.9\textwidth]{agent_based_models/trajectory_demo/I_compare_opt_3.pdf}}%
+				};
+
+				\only<9>{
+					\node[inner sep=0pt,align=flush center,above=\belowcaptionskip of infection,text width=\linewidth]
+					{\vspace{-1em}{
+						\large {\color{darkgreen} infections $\downarrow$}
+					}};
+				}%
+
+			\end{tikzpicture}%
+
+		\end{column}
+		%
+		\begin{column}{.5\textwidth} % Left column and width
+
+			\tikzstyle{background grid}=[draw, black!50,step=.1cm]
+			\begin{tikzpicture}[remember picture, overlay] %show background grid, 
+				\node [inner sep=0pt,above right, opacity=1.0]  at (0.0\textwidth,-0.66\textheight) (abm) 
+					{
+						\only<2-5>{
+							\includegraphics[width=0.95\textwidth]{agent_based_models/render_1_restrictions/sim_50.pdf}
+						}%	
+						\only<6>{
+							\begin{animateinline}[autoplay,width=0.95\textwidth]{70}
+								\ifshowanimations
+									\multiframe{75}{i=50+45}{%
+										\includegraphics{agent_based_models/render_1_restrictions_anim/sim_\i.pdf}
+									}
+								\else
+									\multiframe{1}{i=50+0}{%
+										\includegraphics{agent_based_models/render_1_restrictions/sim_\i.pdf}
+									}
+								\fi
+							\end{animateinline}%
+						}%
+						\only<7>{
+							\includegraphics[width=0.95\textwidth]{agent_based_models/render_1_restrictions/sim_3500.pdf}
+						}%
+					};
+				\only<3-7>{\node[inner sep=0pt,align=flush center,above=\belowcaptionskip of abm,text width=\linewidth]
+					{\vspace{-1em}{\large with intervention}};}%
+				%
+				\node [inner sep=0pt,above right, opacity=1.0]  at (0.0\textwidth,-0.69\textheight) (mobility) 
+				{
+					\only<8>{\includegraphics[width=0.9\textwidth]{agent_based_models/trajectory_demo/M_compare_opt_1.pdf}}%
+					\only<9>{\includegraphics[width=0.9\textwidth]{agent_based_models/trajectory_demo/M_compare_opt_3.pdf}}%
+				};
+				\only<3>{
+					\node [draw=black, line width=0.1mm, fill=white, inner sep=5pt,above right, opacity=1.0]  at (0.5,-1.5) (text eworker) 
+						{
+							\Large essential workers
+						};
+					\node [above right] at (3,-3.5) (eworker) {};
+					\draw[-stealth,line width=2pt] (text eworker.south) to [in=90,out=270] (eworker);
+				}%
+				\only<4>{
+					\node [draw=black, line width=0.1mm, fill=white, inner sep=5pt,above right, opacity=1.0]  at (0.5,-1.5) (text hospital) 
+						{
+							\Large testing and quarantine
+						};
+					\node [above right] at (1,-4.5) (hospital) {};
+					\draw[-stealth,line width=2pt] (text hospital.south) to [in=90,out=270] (hospital);
+				}%
+				\only<5>{
+					\node [draw=black, line width=0.1mm, fill=white, inner sep=5pt,above right, opacity=1.0]  at (0.5,-1.5) (text sd) 
+						{
+							\Large social distancing
+						};
+					\node [above right] at (2.6,-4.7) (sd) {};
+					\node [above right] at (2.2,-5.5) (a1) {};
+					\node [above right] at (2.7,-4.5) (a2) {};
+					\draw[-stealth,line width=2pt] (text sd.south) to [in=90,out=270] (sd);
+					\draw[stealth-stealth,line width=2pt,red] (a1) to (a2);
+				}%
+				\only<9->{
+					\node[inner sep=0pt,align=flush center,above=\belowcaptionskip of mobility,text width=\linewidth]
+					{\vspace{-1em}{
+						\large {\color{red} mobility $\downarrow$}
+					}};
+				}%
+				% show origin
+				% \fill (0,0) circle (2pt);
+			\end{tikzpicture}%
+		\end{column}
+
+	\end{columns}
+	\vspace{-3em}
+\end{frame}
+%------------------------------------------------
+\begin{frame}[t,label=abm_4]
+	\frametitle{Optimization problem}
+	\tikzstyle{background grid}=[draw, black!50,step=.5cm]
+	%
+	\uncover<2->{No gradient information available, blackbox is expensive and \only<3->{\emphasis}{noisy}}\\
+	%
+	\begin{columns}[t] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+		\begin{column}{.42\textwidth} % Left column and width
+			\vspace{-1.2em}
+			% Optimization problem
+			\begin{exampleblock}{Objective and constraints}
+				\only<1-3>{
+					\begin{equation*}
+						\begin{aligned}
+							& \underset{\mathbf{x}}{\text{min}}
+							& & f(\mathbf{x}) = -M^{T}\\
+							& \text{subject to}
+							& & \uncover<2->{{c}(\mathbf{x}) \equiv n_{I,\text{max}} - H_{\text{max}} \le 0}\\
+							& \text{where}
+							& & \mathbf{x}=\left[n_E,S_D,n_T\right]^\mathit{T}\\
+						\end{aligned}
+					\end{equation*}
+				}%
+				\only<4->{
+					\vspace{-1.2em}
+					\begin{equation*}
+						\begin{aligned}
+							& \underset{\mathbf{x}}{\text{min}}
+							& & f(\mathbf{x}) = \mathbb{E}_{\Theta}\left[{f}_{\Theta}(\mathbf{x}) = -M^{T}\right]\\
+							& \text{subject to}
+							& & {c}(\mathbf{x}) = \mathbb{E}_{\Theta}\left[{c}_{\Theta}(\mathbf{x}) \equiv n_{I,\text{max}} - H_{\text{max}}\right] \le 0\\
+							& \text{where}
+							& & \mathbf{x}=\left[n_E,S_D,n_T\right]^\mathit{T},{\color{red}\Theta\mathrm{:realizations}}
+						\end{aligned}
+					\end{equation*}
+				}%
+			\end{exampleblock}
+			\vspace{-0.5em}
+			\uncover<1->{
+				% Variables
+				\begin{alertblock}{Design variables}
+					\vspace{-0.0em}
+						\begin{itemize}\itemsep0em
+							\item $n_E:$ Number of essential workers
+							\item $S_D:$ Social distancing factor
+							\item $n_T:$ Number of tests daily
+						\end{itemize}
+				\end{alertblock}
+			}%
+			\vspace{-0.5em}
+			\uncover<5->{
+				% Parameters
+				\begin{blueblock}{Randomly seeded parameters}
+					\vspace{-0.0em}
+					\begin{itemize}\itemsep0em
+						\item Initial conditions
+						\item Interactions, demographics
+					\end{itemize}
+				\end{blueblock}
+			}%
+		\end{column}
+		%
+		\begin{column}{.5\textwidth} % Left column and width
+			\tikzstyle{background grid}=[draw, black!50,step=.5cm]
+			\begin{tikzpicture}[remember picture, overlay]%[show background grid]
+				\only<1-5>{
+					\node [inner sep=0pt,above right, opacity=1.0] at (0, -4.5) (objective)
+						{
+							\only<1->{\includegraphics[width=0.7\textwidth]{agent_based_models/trajectory_demo/M_compare_opt_3.pdf}}%
+						};
+					\only<1->{
+						\node [above right] at (3.2,-3.5) (a1) {};
+						\node [above right] at (2.2,-1.5) (a2) {};
+						\draw[-stealth,line width=2pt,black] (a1) to [out=90, in=310] (a2);
+					}
+					\node [inner sep=0pt,above right, opacity=0.7] at (2.5, -6.5) (constraint)
+						{
+							\only<2->{\includegraphics[width=0.7\textwidth]{agent_based_models/trajectory_demo/I_compare_opt_3.pdf}}%
+						};
+					\only<2->{
+						\node [above right] at (4.7,-3.5) (a1) {};
+						\node [above right] at (3.7,-5.5) (a2) {};
+						\draw[-stealth,line width=2pt,black] (a1) to [out=210, in=90] (a2);
+					}					
+
+				}%
+				% show origin
+				% \fill (0,0) circle (2pt);
+				% define destination coordinates
+			\end{tikzpicture}%
+		\end{column}
+	
+	\end{columns}
+	\vspace{-3em}
+\end{frame}
+%------------------------------------------------
+\subsection{Optimization results}
+%------------------------------------------------
+\begin{frame}[t,label=abm_7]
+	\frametitle{Optimization results}
+	\tikzstyle{background grid}=[draw, black!50,step=.5cm]
+	%
+	\uncover<1->{StoMADS, \texttt{NOMAD}\ifshowcitations\footpartcite{NOMAD}\fi, and genetic algorithms were used to solve the problem\ifshowcitations\footpartcite{Alhandawi2021b}\fi}\\
+	%
+	\begin{columns}[t] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+		\begin{column}{.42\textwidth} % Left column and width
+			\vspace{-1.2em}
+			% Optimization problem
+			\begin{exampleblock}{Objective and constraints}
+				\vspace{-1.2em}
+				\begin{equation*}
+					\begin{aligned}
+						& \underset{\mathbf{x}}{\text{min}}
+						& & f(\mathbf{x}) = \mathbb{E}_{\Theta}\left[{f}_{\Theta}(\mathbf{x}) = -M^{T}\right]\\
+						& \text{subject to}
+						& & {c}(\mathbf{x}) = \mathbb{E}_{\Theta}\left[{c}_{\Theta}(\mathbf{x}) \equiv n_{I,\text{max}} - H_{\text{max}}\right] \le 0\\
+						& \text{where}
+						& & \mathbf{x}=\left[n_E,S_D,n_T\right]^\mathit{T},\Theta\mathrm{:realizations}
+					\end{aligned}
+				\end{equation*}
+			\end{exampleblock}
+			\vspace{-0.5em}
+			% Variables
+			\begin{alertblock}{Design variables}
+				\vspace{-0.0em}
+					\begin{itemize}\itemsep0em
+						\item $n_E:$ Number of essential workers
+						\item $S_D:$ Social distancing factor
+						\item $n_T:$ Number of tests daily
+					\end{itemize}
+			\end{alertblock}
+			\vspace{-0.5em}
+			% Parameters
+			\begin{blueblock}{Randomly seeded parameters}
+				\vspace{-0.0em}
+				\begin{itemize}\itemsep0em
+					\item Initial conditions
+					\item Interactions, demographics
+				\end{itemize}
+			\end{blueblock}
+		\end{column}
+		%
+		\begin{column}{.5\textwidth} % Left column and width
+			\tikzstyle{background grid}=[draw, black!50,step=.5cm]
+			\begin{tikzpicture}[remember picture, overlay]%[show background grid]
+				\node [inner sep=0pt, opacity=1.0,minimum size=10cm]  at (0.47\textwidth,-0.05\textheight) (mobility) 
+				{	
+					\centering
+					\only<2>{\includegraphics[height=12pt]{agent_based_models/results_opt_traces/legend_0.pdf}}%
+					\only<3>{\includegraphics[height=12pt]{agent_based_models/results_opt_traces/legend_1.pdf}}%
+					\only<4->{\includegraphics[height=12pt]{agent_based_models/results_opt_traces/legend_2.pdf}}%
+				};
+				\node [inner sep=0pt,above right, opacity=1.0]  at (0.0\textwidth,-0.69\textheight) (mobility) 
+				{
+					\only<2>{\includegraphics[width=0.95\textwidth]{agent_based_models/results_opt_traces/f_nk=20_0.pdf}}%
+					\only<3>{\includegraphics[width=0.95\textwidth]{agent_based_models/results_opt_traces/f_nk=20_1.pdf}}%
+					\only<4>{\includegraphics[width=0.95\textwidth]{agent_based_models/results_opt_traces/f_nk=20_2.pdf}}%
+					\only<5>{\includegraphics[width=0.95\textwidth]{agent_based_models/results_opt_traces/g_nk=20_2.pdf}}%
+				};
+				\only<2-5>{
+					\node[inner sep=0pt,align=flush center,above=\belowcaptionskip of mobility,text width=\linewidth]
+					{\vspace{1.0em}{
+						\large sampling rate $n^k=4$
+					}};
+				}%
+				% show origin
+				% \fill (0,0) circle (2pt);
+			\end{tikzpicture}%
+			\begin{tikzpicture}[remember picture, overlay]%[show background grid]
+				\node [inner sep=0pt,above right, opacity=1.0]  at (0.0\textwidth,-0.75\textheight) (mobility) 
+				{
+					\only<6>{\includegraphics[width=0.93\textwidth]{agent_based_models/trajecctory_results/I_compare_opt_0.pdf}}%
+					\only<7>{\includegraphics[width=0.93\textwidth]{agent_based_models/trajecctory_results/I_compare_opt_1.pdf}}%
+					\only<8>{\includegraphics[width=0.93\textwidth]{agent_based_models/trajecctory_results/I_compare_opt_2.pdf}}%
+					\only<9>{\includegraphics[width=0.93\textwidth]{agent_based_models/trajecctory_results/M_compare_opt_2.pdf}}%
+				};
+				\only<6->{
+					\node[inner sep=0pt,align=flush center,above=\belowcaptionskip of mobility,text width=\linewidth]
+					{\vspace{0.5em}{
+						\large best known solution
+					}};
+				}%
+				% show origin
+				% \fill (0,0) circle (2pt);
+			\end{tikzpicture}%
+		\end{column}
+	
+	\end{columns}
+	\vspace{-3em}
+\end{frame}
+\addtocounter{footnote}{-2}
+%------------------------------------------------
+\subsection{COVID\_SIM\_GPU}
+%------------------------------------------------
+\begin{frame}[fragile,	t,noframenumbering]
+	\frametitle{Pseudo-code of ABM}
+    %
+	\vspace{-1em}
+	\begin{algorithm}[H] % must use [H]
+		\tiny
+		\DontPrintSemicolon % Some LaTeX compilers require you to use \dontprintsemicolon instead
+		\KwIn{
+			model parameters, demographics, random seed
+		}
+		\KwOut{$n_F^{T}$, $n_{I,\text{max}}$, $M^{T}$}
+		%
+		\textbf{[0] Initialization}\;
+		\qquad set time frame $t \gets 0$, initialize traits $\mathbf{A}^0$, initialize mobility $\mathbf{G}^0 = \mathbf{0}$\;
+		%
+		\textbf{[1] Update ABM}\;
+		\qquad \lIf{$t = 50$,} {set patient-zero as infected and seed the disease}
+		\qquad loop over agents \For{$i = 1, 2, ..., \bar{n}$} {
+	
+			\only<2>{\emphasis}{\textbf{[2] Social interaction}}\;
+			\qquad \For{$j = 1, 2, ..., \bar{n}$} {
+				\qquad \lIf{$j\neq i$} {
+					compute $f_{x,i,j}, ~f_{y,i,j}$
+				}
+			}
+			\qquad compute social interaction forces $F_{x,i}^{t}, ~F_{y,i}^{t}$\;
+			
+			\textbf{[3] Update model dynamics} update velocities $v_{x,i}^{t+1}$, $v_{y,i}^{t+1}$, update positions $z_{x,i}^{t+1}$, $z_{y,i}^{t+1}$\;
+	
+			\only<3>{\emphasis}{\textbf{[4] Mobility}}\;
+	
+			\qquad \For{$j_g = 1, 2, ..., n_{\text{grids}}$} {
+				\qquad compute grid bounds $l_{x,j_g} = \frac{{j_g}~\text{mod}~n_{g}}{n_{g}},~ l_{y,j_g} = \frac{{j_g}/n_{g}}{n_{g}},~ u_{x,j_g} = \frac{{j_g}~\text{mod}~n_{g} + 1}{n_{g}},~\text{and}~ u_{y,j_g} = \frac{{j_g}/n_{g} + 1}{n_{g}}$
+	
+				\qquad \lIf{$l_{x,j_g} < z_{x,i}^{t+1} \le u_{x,j_g}$ and $l_{y,j_g} < z_{y,i}^{t+1} \le u_{y,j_g}$} {
+					$g_{i,j_{g}}^{t+1} = 1$
+				} \qquad \lElse {
+					$g_{i,j_{g}}^{t+1} = g_{i,j_{g}}^{t}$
+				}
+			}
+			\qquad compute mobility of agent $i$ $\mu_{i}^{t} = \frac{1}{n_{\text{grids}}}\sum_{j_{g}=1}^{n_{\text{grids}}}g_{i,j_{g}}^{t}$
+	
+			\textbf{[6] Disease model} determine infections, fatalities, and hospitalizations\;
+		}
+		\textbf{[7] Termination}\;
+		\If{$t < T_{\text{max}}$} {
+			set $t \gets t+1$, go to \textbf{[1]}\;
+			otherwise \textbf{stop}
+		}
+	\end{algorithm}
+	\tikzstyle{background grid}=[draw, black!50,step=.5cm]
+	\begin{tikzpicture}[remember picture, overlay] %show background grid, 
+		\only<2->{\node [inner sep=0pt,above right, opacity=1.0]  at (0.25\paperwidth,0.05\paperheight) (notes) 
+		{\colorbox{white!20}{\framebox{
+			\begin{varwidth}{0.7\linewidth}
+				\only<2>{\input{kernel_1.tex}}%
+				\only<3>{\input{kernel_2.tex}}%
+			\end{varwidth}
+		}}};
+		}%
+		% show origin
+		% \fill (0,0) circle (2pt);
+	\end{tikzpicture}
+\end{frame}
+%------------------------------------------------
+\begin{frame}[t,noframenumbering]
+	\frametitle{Open source GPU implementation of agent-based modeling \ifshowcitations\footpartcite{Alhandawi2021c}\fi}
+    %
+	\begin{figure}
+        \centering
+        \begin{animateinline}[autoplay,height=6.5cm]{8}
+			\ifshowanimations
+				\multiframe{100}{i=5+5}{%
+				\includegraphics{agent_based_models/ABM_GIF_anim/pandemicsimulation_\zeropad{1560}{\i}.png}
+				}
+			\else
+				\multiframe{1}{i=1555+0}{%
+				\includegraphics{agent_based_models/ABM_GIF/pandemicsimulation_\zeropad{1560}{\i}.png}
+				}
+			\fi
+        \end{animateinline}
+    \end{figure}%
+
+\end{frame}
+\addtocounter{footnote}{-1}
+%------------------------------------------------

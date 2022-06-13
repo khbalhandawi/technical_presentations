@@ -1,0 +1,53 @@
+% https://tex.stackexchange.com/a/28633
+\makeatletter
+% Use Euclid's Algorithm to find the greatest 
+% common divisor of two integers.
+\def\gcd#1#2{{% #1 = a, #2 = b
+    \ifnum#2=0 \edef\next{#1}\else
+        \@tempcnta=#1 \@tempcntb=#2 \divide\@tempcnta by\@tempcntb
+        \multiply\@tempcnta by\@tempcntb  % q*b
+        \@tempcntb=#1
+        \advance\@tempcntb by-\@tempcnta % remainder in \@tempcntb
+        \ifnum\@tempcntb=0
+            \@tempcnta=#2
+            \ifnum\@tempcnta < 0 \@tempcnta=-\@tempcnta\fi
+            \xdef\gcd@next{\noexpand%
+                \def\noexpand\thegcd{\the\@tempcnta}}%
+        \else
+            \xdef\gcd@next{\noexpand\gcd{#2}{\the\@tempcntb}}%
+        \fi
+    \fi}\gcd@next
+}
+\newcommand\reduceFrac[2]
+{%
+   \gcd{#1}{#2}{\@tempcnta=#1 \divide\@tempcnta by\thegcd
+   \@tempcntb=#2 \divide\@tempcntb by\thegcd
+   \ifnum\@tempcntb<0\relax
+      \@tempcntb=-\@tempcntb
+        \@tempcnta=-\@tempcnta
+    \fi
+    \xdef\rfNumer{\the\@tempcnta}
+    \xdef\rfDenom{\the\@tempcntb}}%
+}
+\makeatother
+
+\newcommand*{\fracReduced}[2]{%
+    \reduceFrac{#1}{#2}%
+    \ensuremath{%
+        \ifnum\rfDenom=1
+            \rfNumer
+        \else
+            \frac{\rfNumer}{\rfDenom}%
+        \fi
+    }%
+}%
+
+
+\newcommand{\addfraction}[2]{% 1N, 1D, 2N, 2D
+    \pgfmathsetmacro{\newnumerator}{#1}
+    \pgfmathsetmacro{\newdenominator}{#2}
+    \pgfmathtruncatemacro{\newnumeratorTrunc}{\newnumerator}
+    \pgfmathtruncatemacro{\newdenominatorTrunc}{\newdenominator}
+    \pgfkeys{/pgf/number format/.cd,int detect,precision=2}
+    \fracReduced{\newnumeratorTrunc}{\newdenominatorTrunc}
+}
