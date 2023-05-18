@@ -30,7 +30,7 @@
 
 \usetheme{Madrid}
 % Change base colour beamer@blendedblue (originally RGB: 0.2,0.2,0.7)
-\colorlet{beamer@blendedblue}{red!80!black}
+\colorlet{beamer@blendedblue}{blue!80!black}
 
 % As well as themes, the Beamer class has a number of color themes
 % for any slide theme. Uncomment each of these in turn to see how it
@@ -49,8 +49,8 @@
 
 % Toggle animations on or off for faster build times
 \newif\ifshowanimations
-\showanimationstrue
-% \showanimationsfalse
+% \showanimationstrue
+\showanimationsfalse
 
 % Toggle animations on or off for faster build times
 \newif\ifshowcitations
@@ -355,22 +355,25 @@
 % Section 04: closing remarks
 \include{4_closing_remarks}
 
-% Section 05: IATA aviation
-\include{5_graph_learning}
-
-% Section 06: agent based model
-\include{6_abm_work}
-
-% % \includeonlyframes{abm_2}
-% % Section 02: machine learning work
-% \include{2_machine_learning}
-
 %------------------------------------------------
 \begin{frame}
 	\centering
 	\Huge \emphasis{Thank you for your time}
 \end{frame}
 %------------------------------------------------
+
+% Section 05: IATA aviation
+\include{5_software}
+
+% Section 05: IATA aviation
+\include{6_graph_learning}
+
+% Section 06: agent based model
+\include{7_abm_work}
+
+% % \includeonlyframes{abm_2}
+% % Section 02: machine learning work
+% \include{2_machine_learning}
 
 % Supplementary slides
 % \include{design_margins}

@@ -1,0 +1,57 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                    The web app                    %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%------------------------------------------------
+\section{Web application for determining scalability}
+% \frame{\tableofcontents[
+% 	currentsection, 
+% 	hideallsubsections
+% 	]}
+%------------------------------------------------
+\begin{frame}[c,noframenumbering]
+	\centering
+	% \setlength\fboxsep{0pt}
+	\begin{titleblock}{}
+		~\\%
+		{\centering\LARGE Software tools for assisting designers\\}%
+		~\\%
+	\end{titleblock}
+\end{frame}
+%------------------------------------------------
+\begin{frame}[t]
+\frametitle{Scale AM: an open-source tool for scalability assessment \ifshowcitations\textsuperscript{[1,2]}\fi}
+
+\begin{columns}
+    \begin{column}{.4\textwidth} % Left column and width
+        \vspace{-2em}
+        \begin{itemize}
+            \item<2-> Takes as input DoE data 
+            %from a design of experiments (DOE) run (e.g., Latin Hypercube, Full factorial, etc.)
+            \item<3-> Provides a UI for providing \textit{change effect} and \textit{monotonicity} vectors %based on problem dimensionality
+            \item<4-> Plots selected 2D projections of the parameter space and kernel smoothing model
+            \item<5-> Displays Jacobian components \uncover<6->{\color{red}and their intersection}
+        \end{itemize}
+    \end{column}
+    
+    \begin{column}{.5\textwidth} % Left column and width
+        \vspace{-2em}
+        \begin{figure}
+            \only<1>{\includegraphics[height=7cm]{scalability/web_app/0_example_trs.png}}%
+            \only<2>{\includegraphics[height=7cm]{scalability/web_app/1_example_trs.png}}%
+            \only<3>{\includegraphics[height=7cm]{scalability/web_app/2_example_trs.png}}%
+            \only<4>{\includegraphics[height=7cm]{scalability/web_app/3_example_trs.png}}%
+            \only<5>{\includegraphics[height=7cm]{scalability/web_app/4_example_trs.png}}%
+            \only<6>{\includegraphics[height=7cm]{scalability/web_app/5_example_trs.png}}%
+        \end{figure}
+    \end{column}
+\end{columns}
+
+\vspace{-3em}
+{\color{white}
+\ifshowcitations
+    \footpartcite{scaleAMGIT}[1]
+    \footpartcite{scaleAM}[2]
+\fi
+}
+\end{frame}
+\addtocounter{footnote}{-2}
