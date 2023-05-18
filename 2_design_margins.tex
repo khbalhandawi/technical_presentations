@@ -1,0 +1,185 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%        ANSWERING THE RESEARCH QUESTIONS           %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Change absorption through excess and buffer}
+%------------------------------------------------
+\begin{frame}[c,noframenumbering]
+	\centering
+	% \setlength\fboxsep{0pt}
+	\begin{titleblock}{}
+		~\\%
+		{\centering\LARGE Using design margins to absorb change in requirements \ifshowcitations\footnotemark[1]\fi\\}%
+		~\\%
+	\end{titleblock}
+	{\color{white}\ifshowcitations\footpartcite{Alhandawi2021}[1]\fi}
+\end{frame}
+\addtocounter{footnote}{-1}
+%------------------------------------------------
+\begin{frame}[t,label=ap2_2]
+	\frametitle{Quantifying capability, buffer, and excess}
+	\vspace{-1em}
+	\uncover<2->{We focus on one 2D projection}%
+	~\\
+	\begin{columns}[t] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+		\begin{column}{.5\textwidth} % Left column and width
+			\small
+			\vspace{-1em}
+			\begin{itemize}
+				\item<1-> \textit{Failure criterion}: Factor of safety $n_{\textrm{safety}}(\mathbf{T})$ \uncover<2->{represented using isocontours}
+				\item<3-> \textit{Capability}: Loads that \emphasis{can} be satisfied
+				\item<4-> \textit{Requirements}: Loads that \emphasis{must} be satisfied
+				\item<5-> \textit{Buffer}: Portion of requirement \emphasis{satisfied}
+				\item<6-> \textit{Danger}: Portion of requirement \emphasis{not satisfied}
+				\item<7-> \textit{Excess}: \emphasis{Unused} capability not needed for satisfying requirement
+				\item<8-> \textit{Reliability}: $\smash{\mathbb{P}(\mathbf{T} \in C)}$ estimated using Monte-Carlo integration
+			\end{itemize}
+		\end{column}
+	
+		\begin{column}{.45\textwidth} % Left column and width
+			\begin{figure}
+				\only<1>{\includegraphics[height=5.0cm]{design_margins/DM_geometry/TRS_isometric_failure_domain.pdf}}%
+				\only<2>{\includegraphics[height=5.6cm]{design_margins/DM_parameter_space/109_req_1_thermal_out_nominal_RS_2D_pi_0.pdf}}%
+				\only<3>{\includegraphics[height=5.6cm]{design_margins/DM_parameter_space/109_req_1_thermal_out_nominal_RS_2D_pi_1.pdf}}%
+				\only<4>{\includegraphics[height=5.6cm]{design_margins/DM_parameter_space/109_req_1_thermal_out_nominal_RS_2D_pi_2.pdf}}%
+				\only<5>{\includegraphics[height=5.6cm]{design_margins/DM_parameter_space/109_req_1_thermal_out_nominal_RS_2D_pi_3.pdf}}%
+				\only<6>{\includegraphics[height=5.6cm]{design_margins/DM_parameter_space/109_req_1_thermal_out_nominal_RS_2D_pi_4.pdf}}%
+				\only<7>{\includegraphics[height=5.6cm]{design_margins/DM_parameter_space/109_req_1_thermal_out_nominal_RS_2D_pi_5.pdf}}%
+				\only<8>{\includegraphics[height=5.6cm]{design_margins/DM_parameter_space/109_req_1_thermal_out_nominal_RS_2D_pi_6.pdf}}%
+				\only<1>{
+					\vspace{-0.2em}
+					\caption{Failure domain}
+				}%
+			\end{figure}
+		\end{column}
+		
+	\end{columns}
+	
+\end{frame}
+%------------------------------------------------
+\begin{frame}[t,label=ap2_3]
+	\frametitle{Considering redesign when buffer is insufficient}
+	\vspace{-1em}
+	\only<1>{Going back to our baseline design we can calculate these metrics as follows:}%
+	\only<2>{Consider depositing more material}%
+	\only<3>{Reliability increases}%
+	\only<4->{However, {\color{red} requirements can change as well!}}%
+	~\\
+	\begin{columns}[t] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+		\begin{column}{.45\textwidth} % Left column and width
+			\only<1>{$c=1$,$\mathbf{D}=\left[1,2,4\right]$}%
+			\only<2->{$c=1$,$\mathbf{D}=\left[1,2,4,{\color{red}0}\right]$}%
+			\begin{figure}
+				\only<1-2>{\includegraphics[height=5.0cm]{design_margins/DM_geometry/TRS_isometric_7.pdf}}%
+				\only<3->{\includegraphics[height=5.0cm]{design_margins/DM_geometry/TRS_isometric_8.pdf}}%
+				\vspace{-0.2em}
+				\caption{Turbine Rear Structure (TRS)}
+			\end{figure}
+			\vspace{-2em}
+			\begin{table}[h!]
+				\centering
+				% \renewcommand{\arraystretch}{1.0}% Wider
+				\footnotesize\addtolength{\tabcolsep}{-2pt}
+				\begin{tabular}{ccc}
+					\bf Reliability & \bf Excess & \bf Weight\\
+					\only<1-2>{0.3089 & 0.529 & 13.9\\}%
+					\only<3>{0.759({\color{darkgreen}$\uparrow 145\%$}) & 0.856({\color{red}$\uparrow 62\%$}) & 18.5($\color{red}\uparrow 33\%$)\\}
+					\only<4>{0.943({\color{darkgreen}$\uparrow 24\%$}) & 0.754({\color{darkgreen}$\downarrow 12\%$}) & 18.5\\}
+					\only<5>{1.00({\color{darkgreen}$\uparrow 6\%$}) & 0.871({\color{red}$\uparrow 15\%$}) & 18.5\\}
+				\end{tabular}
+			\end{table}
+		\end{column}
+		
+		\begin{column}{.45\textwidth} % Left column and width
+			\centering
+			~\\%
+			~\\%
+			\vspace{-1em}
+			\begin{figure}
+				\only<1-2>{\includegraphics[height=5.6cm]{design_margins/DM_parameter_space/109_req_1_thermal_out_nominal_RS_2D_pi_6.pdf}}%
+				\only<3>{\includegraphics[height=5.6cm]{design_margins/DM_parameter_space/110_req_1_thermal_out_nominal_RS_2D_pi_6.pdf}}%
+				\only<4>{\includegraphics[height=5.6cm]{design_margins/DM_parameter_space/110_reqs_2D/110_req_15_thermal_out_RS_2D_pi_6.pdf}}%
+				\only<5>{\includegraphics[height=5.6cm]{design_margins/DM_parameter_space/110_reqs_2D/110_req_11_thermal_out_RS_2D_pi_6.pdf}}%
+				\label{fig:2DPspace}
+			\end{figure}
+		\end{column}
+		
+	\end{columns}
+	
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%         APPLYING THE RESEARCH QUESTIONS           %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%------------------------------------------------
+\subsection{Optimizing when and how much change is needed}
+%------------------------------------------------
+\begin{frame}[t]
+	\frametitle{Optimizing when and how much change is needed}
+	\vspace{-0.5em}
+	Formulate optimization problem to minimize total excess while being reliable
+	
+	\begin{columns}[t] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+		
+		\begin{column}{.42\textwidth} % Left column and width
+			\vspace{-1.5em}
+			% Optimization problem
+			\begin{alertblock}{Objective and constraints}
+				\vspace{-1.5em}
+				\begin{equation*}
+					\begin{aligned}
+						& {\text{minimize}}
+						& & \text{excess}(c,\mathbf{D};\text{requirement arc})\\
+						& \text{subject to}
+						& & reliability(c,\mathbf{D};\text{requirement arc})\\
+						& \text{over}
+						& & \text{The set of feasible design decisions}\\
+						& & & \text{(404 possible combinations)}
+					\end{aligned}
+				\end{equation*}
+			\end{alertblock}
+			\vspace{-0.5em}
+			\uncover<3->{
+				% Variables
+				\begin{exampleblock}{Design variables}
+					\vspace{-0.5em}
+					\begin{equation*}
+						\begin{aligned}
+							& & & c \in \left\{"wavy","hatched","tubular"\right\}\\
+							& & & \mathbf{D} = \left[\text{decision}_1,\text{decision}_2,\cdots\right]\\
+							& & & \text{decision} \in \left\{-1,0,1,2,3,4\right\}\\
+						\end{aligned}
+					\end{equation*}
+				\end{exampleblock}
+			}
+			\vspace{-0.5em}
+		\end{column}
+
+		\begin{column}{.5\textwidth} % Right column and width
+			\vspace{-1em}
+			\tikzstyle{background grid}=[draw, black!50,step=.5cm]
+			
+			\begin{tikzpicture}%[show background grid]
+			% Put the graphic inside a node. This makes it easy to place the
+			% graphic and to draw on top of it. 
+			% The above right option is used to place the lower left corner
+			% of the image at the (0,0) coordinate. 
+				\uncover<-5>{
+					\node [inner sep=0pt,above right, opacity=0.6]  at (0, 1) (objective)
+						{
+							\only<2->{\includegraphics[height=5.0cm]{design_margins/DM_parameter_space/110_reqs_2D/110_req_11_thermal_out_RS_2D_pi_6.pdf}}%
+						};
+					\node [inner sep=0pt,above right, opacity=0.7, fill=white]  at (4.0, -.75) (constraint)
+						{
+							\only<3->{\includegraphics[height=4.0cm]{design_margins/DM_geometry/TRS_isometric_8.pdf}}%
+						};
+				}
+				% show origin
+				% \fill (0,0) circle (2pt);
+				% define destination coordinates
+			\end{tikzpicture}
+
+		\end{column}
+
+	\end{columns}
+\end{frame}

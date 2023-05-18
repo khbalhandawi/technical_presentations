@@ -137,11 +137,11 @@
 }
 
 \usepackage{textpos}
-\addtobeamertemplate{frametitle}{}{%
-	\begin{textblock*}{100mm}(.94\textwidth,-1.1cm)
-		\colorbox{white}{\includegraphics[height=1.2cm]{logos/mcgill_logo.pdf}}
-	\end{textblock*}
-}
+% \addtobeamertemplate{frametitle}{}{%
+% 	\begin{textblock*}{100mm}(.94\textwidth,-1.1cm)
+% 		\colorbox{white}{\includegraphics[height=1.2cm]{logos/mcgill_logo.pdf}}
+% 	\end{textblock*}
+% }
 
 %==============================================================================%
 %% Reduce TOC spacing
@@ -169,7 +169,7 @@
 \usepackage{changepage} % adjust slide margins
 \usepackage{graphicx} % Allows including images
 \usepackage{animate} % For animated images
-\graphicspath{ {Images/} }
+\graphicspath{ {images/} }
 \usepackage{tikz}
 \usepackage{tikz-dimline}
 \usetikzlibrary{calc,fadings,positioning,arrows,shapes,backgrounds,shapes.geometric,arrows.meta}
@@ -304,7 +304,7 @@
 %	TITLE PAGE
 %----------------------------------------------------------------------------------------
 
-\title[]{Overview of my research and related software packages} % The short title appears at the bottom of every slide, the full title is only on the title page
+\title[]{Overview of my research projects} % The short title appears at the bottom of every slide, the full title is only on the title page
 
 \author[K. Al Handawi]{Khalil Al Handawi, PhD} % Your name
 
@@ -319,14 +319,14 @@
 \begin{document}
 
 \begin{frame}
-	\begin{tikzpicture}[remember picture,overlay]
-	\node[opacity=0.9] (image) at
-		([xshift=-0.125\textwidth, yshift =-1cm]current page.east) 	%or: (current page.center)
-		{\includegraphics[height=1.6\textheight]{logos/mcgill_logo.pdf}};
-		\framenode[600pt]{image}
-\end{tikzpicture}
+	% \begin{tikzpicture}[remember picture,overlay]
+	% \node[opacity=0.9] (image) at
+	% 	([xshift=-0.125\textwidth, yshift =-1cm]current page.east) 	%or: (current page.center)
+	% 	{\includegraphics[height=1.6\textheight]{logos/mcgill_logo.pdf}};
+	% 	\framenode[600pt]{image}
+	% \end{tikzpicture}
 
-\titlepage % Print the title page as the first slide
+	\titlepage % Print the title page as the first slide
 \end{frame}
 
 %----------------------------------------------------------------------------------------
@@ -343,15 +343,27 @@
 % Section 00: Introduction
 \include{KA_introduction}
 
-% Section 01: gent based model
-\include{1_abm_work}
+% Section 01: scalability
+\include{1_scalability}
 
-% \includeonlyframes{abm_2}
-% Section 02: machine learning work
-\include{2_machine_learning}
+% Section 02: design margins
+\include{2_design_margins}
 
 % Section 03: Design space exploration
 \include{3_dse_work}
+
+% Section 04: closing remarks
+\include{4_closing_remarks}
+
+% Section 05: IATA aviation
+\include{5_graph_learning}
+
+% Section 06: agent based model
+\include{6_abm_work}
+
+% % \includeonlyframes{abm_2}
+% % Section 02: machine learning work
+% \include{2_machine_learning}
 
 %------------------------------------------------
 \begin{frame}
@@ -361,7 +373,10 @@
 %------------------------------------------------
 
 % Supplementary slides
-\include{supplementary}
+% \include{design_margins}
+% \include{abm_work}
+% \include{machine_learning}
+% \include{supplementary}
 
 %----------------------------------------------------------------------------------------
 

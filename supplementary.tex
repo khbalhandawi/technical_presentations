@@ -1,9 +1,200 @@
 
+%==============================================================================%
+%% Mathematical symbols
+\definecolor{design}{HTML}{D0A31D}
+\definecolor{spec}{HTML}{FF7575}
+\definecolor{margin}{HTML}{CC99FF}
+\definecolor{perf}{HTML}{87C061}
+\newcommand\design[1]{{\color{design}#1}}
+\newcommand\spec[1]{{\color{spec}#1}}
+\newcommand\margin[1]{{\color{margin}#1}}
+\newcommand\perf[1]{{\color{perf}#1}}
+%==============================================================================%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%              Supplementary Content                %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %------------------------------------------------
 \section{Supplementary content}
+%------------------------------------------------
+\begin{frame}[c,noframenumbering]
+	\centering
+	% \setlength\fboxsep{0pt}
+	\begin{titleblock}{}
+		~\\%
+		{\centering\LARGE Supplementary content: Miscellaneous\\}%
+		~\\%
+	\end{titleblock}
+\end{frame}
+%------------------------------------------------
+\subsection{Example problem: Design of TRS strut}
+%------------------------------------------------
+\begin{frame}[t,label=ap2_2]
+	\frametitle{Overview of turbine rear frame design}
+	\vspace{-1em}
+	\only<1-2>{The turbine rear structure (TRS) sits aft of the turbine}%
+	\only<3>{We consider the design of a single strut}%
+	\only<4>{Variable thermal loads are expected}%
+	\only<5-7>{Which cause thermal expansion \uncover<6-7>{and stress on the strut}}%
+	\only<8>{The entire problem can be represented compactly as an MDM}%
+	~\\
+	\begin{columns}[t] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+			
+		\begin{column}{.45\textwidth} % Left column and width
+			\footnotesize
+			Design parameters:
+			\design{
+				\uncover<3->{
+				\begin{itemize}\itemsep0em 
+					\item \only<8>{$D1$} vane width $w$
+					\item \only<8>{$D2$} vane height $h$
+					\item \only<8>{$D3$} lean angle $\theta$
+					\item \only<8>{$D4$} Material - yield stress $\sigma_y$ (off-the shelf)
+				\end{itemize}
+			}}%
+			Input Specifications:
+			\spec{
+				\uncover<5->{
+				\begin{itemize}\itemsep0em 
+					\item \only<8>{$S1$} Nacelle temperature $T_1$ ($\downarrow$)
+					\item \only<8>{$S2$} Gas surface temperature $T_2$ ($\uparrow$)
+				\end{itemize}
+			}}%
+			Design margins:
+			\margin{
+				\uncover<6->{
+				\begin{itemize}\itemsep0em 
+					\item \only<8>{$E1$} compression $\sigma_y - \sigma_a \ge 0$
+					\item \only<8>{$E2$} bending $\sigma_y - \sigma_m \ge 0$
+					\item \only<8>{$E3$} buckling $F_\text{buckling} - F_a \ge 0$
+				\end{itemize}
+			}}%
+			Performance parameters:
+			\perf{
+				\uncover<7->{
+				\begin{itemize}\itemsep0em 
+					\item \only<8>{$P1$}  Weight
+				\end{itemize}
+			}}%
+		\end{column}
+	
+		\begin{column}{.4\textwidth} % Left column and width
+			\begin{figure}
+				\only<1>{
+					\includegraphics[width=6.0cm]{design_space_exploration/TRS/engine.png}
+					\vspace{-0.2em}
+					\caption{Trent 900 aeroengine}
+				}%
+				\only<2>{
+					\includegraphics[width=5.0cm]{design_space_exploration/TRS/rear_view.pdf}
+					\vspace{-0.2em}
+					\caption{Turbine rear structure}
+				}%
+				\only<3>{
+					\includegraphics[width=7.0cm]{design_space_exploration/TRS/cross_section_view.pdf}
+					\vspace{-0.2em}
+					\caption{Turbine rear structure: cross-sectional view}
+				}%
+				\only<4>{
+					\includegraphics[width=6.0cm]{design_space_exploration/TRS/expansion_1.pdf}
+					\vspace{-0.2em}
+					\caption{Thermal expansion}
+				}%
+				\only<5>{
+					\includegraphics[width=6.0cm]{design_space_exploration/TRS/expansion_2.pdf}
+					\vspace{-0.2em}
+					\caption{Thermal expansion}
+				}%
+				\only<6-7>{
+					\includegraphics[width=7.0cm]{design_space_exploration/TRS/loads.pdf}
+					\vspace{-0.2em}
+					\caption{Load cases}
+				}%
+			\end{figure}
+		\end{column}
+		
+	\end{columns}
+	
+\end{frame}
+%------------------------------------------------
+\subsection{Implementation}
+%------------------------------------------------
+\begin{frame}[fragile,t]
+	\frametitle{Pseudo-code of MVM}
+    %
+	\vspace{-1em}
+	\begin{algorithm}[H] % must use [H]
+		\tiny
+		\DontPrintSemicolon % Some LaTeX compilers require you to use \dontprintsemicolon instead
+		\KwIn{
+			set of possible choices $\mathcal{D}$, chosen design $\mathbf{c}\in\mathcal{D}$,
+			the MAN given by analytic functions, models, and surrogates,
+			$n_\mathrm{samples}$, Joint PDF $F_\mathbf{S}(\mathbf{s})$
+		}
+		\KwOut{estimated mean impact and change absorption $\bar{\bar{\mathbf{a}}}$, $\bar{\bar{\mathbf{i}}}$}
+		%
+		\textbf{[0] Initialization}: 
+			set counter $i_\mathrm{sample} \gets 0$, initialize aggregate absorption and impact $\bar{\bar{\mathbf{a}}} \in \mathbb{R}^e$ and $\bar{\bar{\mathbf{i}}} \in \mathbb{R}^e$\;
+		%
+		\textbf{[1] Monte-carlo simulation}: 
+			draw sample input specifications $\mathbf{S}\in\mathbb{R}^n \sim F_\mathbf{S}(\mathbf{s})$\;
+		%
+		\textbf{[2] Calculate threshold, decided, excess, and performance values}: 
+			$\mathbf{t} = \mathbf{f}(\mathbf{S},\mathbf{c})$, 
+			$\mathbf{d} = \mathbf{g}(\mathbf{c})$, 
+			$\mathbf{e} = \left(\mathbf{t} - \mathbf{d}\right){\mathbf{i}^\mathrm{excess}}^\mathsf{T}$, 
+			$\mathbf{p} =  \mathbf{h}(\mathbf{S},\mathbf{c})$\;
+		%
+		\textbf{[3] Calculate allowable deterioration}\;
+		\qquad loop over input specifications \For{$k = 1, 2, ..., n$} {
+			\qquad perform a line search along the $k$th direction to identify the root of: 
+				$\min{((\mathbf{f}(\mathbf{x},\mathbf{c}) - \mathbf{d}){\mathbf{i}^\mathrm{excess}}^\mathsf{T})} = \mathbf{0}$, $s_k' \gets x^*$, 
+				$s_k^\mathrm{limit} \gets s_k'$\;
+		}
+		%
+		\textbf{[4] Calculate margin value metrics}\;
+		\qquad initialization tensors and vectors, 
+			$\mathbf{I} \in \mathbb{R}^{m\times e} \gets \mathbf{0}$ and $\mathbf{A} \in \mathbb{R}^{n\times e} \gets \mathbf{0}$, 
+			$\mathbf{v} \in \mathbb{R}^{n} \gets \mathbf{0}$, $\bar{\mathbf{a}} \in \mathbb{R}^{e} \gets \mathbf{0}$, and $\bar{\mathbf{i}} \in \mathbb{R}^{e} \gets \mathbf{0}$\;
+		\qquad loop over margin nodes \For{$i = 1, 2, ..., e$} {  
+			\qquad \textbf{[a] Calculate impact on performance}\;
+			\qquad $\mathbf{d}^\mathrm{threshold} \gets \mathbf{d}$, $d_i^\mathrm{threshold} \gets t_i$, 
+				$\mathbf{c}_i^\mathrm{threshold} = \mathbf{g}^{-1}(\mathbf{d}^\mathrm{threshold})$, 
+				$\mathbf{p}_i^\mathrm{threshold} = \mathbf{h}(\mathbf{S},\mathbf{c}_i^\mathrm{threshold})$\;
+			\qquad loop over performance parameters \For{$j = 1, 2, ..., m$} {
+				\qquad $i_{i,j} \gets (p_j - p_{j,i}^\mathrm{threshold})i_j^p/{p_{j,i}^\mathrm{threshold}}$\;
+			}
+			\qquad \textbf{[b] Calculate change absorption capability}\;
+			\qquad loop over input specifications \For{$k = 1, 2, ..., n$} {
+				\qquad calculate deterioration $v_k=(s_k^\mathrm{limit} - s_k)/{s_k}$\;
+				\qquad $a_{i,k} \gets (f_i(\mathbf{s}_k^\mathrm{limit},\mathbf{c}) - f_i(\mathbf{S},\mathbf{c}))/(f_i(\mathbf{S},\mathbf{c})v_k)$\;
+			}
+			\qquad \textbf{[c] Aggregate metrics}: 
+				$\bar{a}_i \gets \frac{1}{n}\sum_{k=1}^{n} a_{i,k}$, 
+				$\bar{i}_i \gets \frac{1}{m}\sum_{k=1}^{m} i_{i,j}$
+		}
+		%
+		\textbf{[5] sum of monte-carlo samples}: 
+			$\bar{\bar{\mathbf{a}}} \gets \bar{\bar{\mathbf{a}}} + \bar{\mathbf{a}}$, 
+			$\bar{\bar{\mathbf{i}}} \gets \bar{\bar{\mathbf{i}}} + \bar{\mathbf{i}}$\;
+		%
+		\textbf{[6] Termination}, 
+		\If{$i_\mathrm{sample} < n_\mathrm{samples}$} {
+			set $i_\mathrm{sample} \gets i_\mathrm{sample}+1$, go to \textbf{[1]}\;
+			otherwise $\bar{\bar{\mathbf{a}}} \gets \bar{\bar{\mathbf{a}}}/n_\mathrm{samples}$ and $\bar{\bar{\mathbf{i}}} \gets \bar{\bar{\mathbf{i}}}/n_\mathrm{samples}$, \textbf{stop}
+		}
+	\end{algorithm}
+\end{frame}
+%------------------------------------------------
+\begin{frame}[t,noframenumbering]
+	\frametitle{UML diagram of \texttt{mvmlib}\ifshowcitations\footpartcite{Alhandawi2022}\fi}
+    %
+	\begin{figure}
+        \centering
+		\only<1>{\includegraphics[width=1.0\textwidth]{design_space_exploration/classes_mvmlib.pdf}}%
+		\only<2>{\includegraphics[width=0.6\textwidth]{design_space_exploration/packages_mvmlib.pdf}}%
+    \end{figure}%
+\end{frame}
+\addtocounter{footnote}{-1}
 %------------------------------------------------
 \subsection{Overview of mesh adaptive direct search}
 %------------------------------------------------
@@ -208,7 +399,7 @@
 	\frametitle{Background: COVID-19 forecasting targets}
 	\tikzstyle{background grid}=[draw, black!50,step=.5cm]
 	%
-	Forecasting novel epidemics is a multidisciplinary field involving multiple \emph{targets} \footpartcite{Wu2021}\\
+	Forecasting novel epidemics is a multidisciplinary field involving multiple \emph{targets} \ifshowcitations\footpartcite{Wu2021}\fi\\
 	\emph{Inputs} for forecasting \emphasis{epidemic size:}\\
     %
     \begin{itemize}

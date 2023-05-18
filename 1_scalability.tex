@@ -1,0 +1,500 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                   Introduction                    %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%------------------------------------------------
+\section{Introduction}
+%------------------------------------------------
+\begin{frame}[t]
+	\frametitle{The challenge}
+	
+	\begin{itemize}
+		\uncover<1->{\item This is a Turbine Rear Structure (TRS) under thermal loading}
+		\uncover<2->{\item Over its lifetime, design requirements can change}
+	\end{itemize}
+	
+	\vspace{-2em}
+	\begin{columns}[t] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+			
+		\begin{column}{.4\textwidth} % Left column and width
+			\begin{figure}
+				\only<0>{
+					\includegraphics[height=5cm]{scalability/TRS_overview_pictures/1a_TRS_isometric_1.pdf}
+				}%
+				\only<1>{
+					\includegraphics[height=5cm]{scalability/TRS_overview_pictures/1a_TRS_isometric_2.pdf}
+				}%
+				\only<2->{
+					\includegraphics[height=5cm]{scalability/TRS_overview_pictures/1a_TRS_isometric_3.pdf}
+				}%
+			\end{figure}
+			\vspace{-3em}
+		\end{column}
+	
+		\begin{column}{.5\textwidth} % Left column and width
+	
+			\begin{figure}
+				\centering\includegraphics[height=5cm]{scalability/trent_900.pdf}
+				\caption{An aeroengine}
+			\end{figure}%
+				
+		\end{column}
+	\end{columns}
+\end{frame}
+%------------------------------------------------
+\begin{frame}[t]
+	\frametitle{The opportunity}
+	
+	\begin{itemize}
+		\item Disposal or redesign can be sub-optimal options
+		\uncover<2->{\item Additive remanufacturing may be a better option to extend useful lifetime}
+	\end{itemize}
+	
+	\vspace{-2em}
+	\begin{columns}[t] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+			
+		\begin{column}{.4\textwidth} % Left column and width
+			\begin{figure}
+				\includegraphics[height=5cm]{scalability/TRS_overview_pictures/1a_TRS_isometric_3.pdf}
+			\end{figure}
+			\vspace{-3em}
+		\end{column}
+	
+		\begin{column}{.5\textwidth} % Left column and width
+	
+			\begin{figure}
+				\only<1>{
+					\vspace{2em}
+					\centering\includegraphics[height=4cm]{scalability/dispose_guy.jpg}
+				}%
+				\only<2>{
+					\centering
+					\begin{animateinline}[autoplay,height=5cm]{5}
+						\ifshowanimations
+							\multiframe{30}{i=1+6}{%
+								\includegraphics{scalability/TEMP_GIF/frame_\i.png}
+							}
+						\else
+							\multiframe{1}{i=180+0}{%
+								\includegraphics{scalability/TEMP_GIF/frame_\i.png}
+							}
+						\fi
+					\end{animateinline}
+					\caption{AM Remanufacturing of TRS}
+				}%
+			\end{figure}%
+				
+		\end{column}
+	\end{columns}
+\end{frame}
+%------------------------------------------------
+% https://tex.stackexchange.com/a/136166
+\tikzset{
+  transparent/.style={opacity=0.4},
+  untransparent on/.style={alt={#1{}{transparent}}},
+  alt/.code args={<#1>#2#3}{%
+    \alt<#1>{\pgfkeysalso{#2}}{\pgfkeysalso{#3}} % \pgfkeysalso doesn't change the path
+  },
+  invisible/.style={opacity=0.0},
+  visible on/.style={alt={#1{}{invisible}}},
+  alt/.code args={<#1>#2#3}{%
+    \alt<#1>{\pgfkeysalso{#2}}{\pgfkeysalso{#3}} % \pgfkeysalso doesn't change the path
+  },
+}
+\begin{frame}[t]
+	\newcommand{\yshift}{0.0cm}
+	\frametitle{Change absorption through scalability}
+    %
+    \tikzstyle{background grid}=[draw, black!50,step=.5cm]
+    \begin{tikzpicture}[remember picture, overlay] %show background grid, 
+        \node [inner sep=0pt,above right, opacity=1.0]  at (7cm,-5cm+\yshift) (original) 
+        {
+            \includegraphics[height=3.5cm]{scalability/intro_definitions/TRS_isometric_A.pdf}
+        };
+        \node [inner sep=0pt,above right, opacity=1.0]  at (7cm,-5cm+\yshift) (loads) 
+        {
+            \includegraphics[height=3.5cm]{scalability/intro_definitions/arrows_1.pdf}
+        };
+		\node [inner sep=0pt,above right, opacity=1.0, visible on=<2-4>]  at (7cm,-5cm+\yshift) (loads2) 
+        {
+            \includegraphics[height=3.5cm]{scalability/intro_definitions/arrows_2.pdf}
+        };
+        \only<4->{
+            \node [inner sep=0pt,above right, untransparent on=<5>]  at (12cm,-3cm+\yshift) (trsA) 
+            {
+                \includegraphics[height=3.5cm]{scalability/intro_definitions/TRS_isometric_B.pdf}
+            };
+            \node [inner sep=0pt,above right, untransparent on=<5>]  at (12cm,-7cm+\yshift) (trsB)
+            {
+                \includegraphics[height=3.5cm]{scalability/intro_definitions/TRS_isometric_C.pdf}
+            };%
+            \draw[,->,thick,untransparent on=<5->] (original.east) to [in=180,out=0] (trsA.west);
+            \draw[,->,thick,untransparent on=<5->] (original.east) to [in=180,out=0] (trsB.west);
+        }%
+		\node[%
+        visible on=<5>,
+            draw=green,
+            fill=green!10,
+            cloud,
+            line width=1mm,
+            font=\fontfamily{ppl}\fontsize{0.5cm}{0.5cm}\selectfont
+        ] at (11cm,-5.25cm+\yshift) {\cmark};
+        \node[%
+            visible on=<5>,
+            draw=red,
+            fill=red!10,
+            cloud,
+            line width=1mm,
+            font=\fontfamily{ppl}\fontsize{0.5cm}{0.5cm}\selectfont
+        ] at (11cm,-1.25cm+\yshift) {\xmark};
+        % show origin
+        % \fill (0,0) circle (2pt);
+    \end{tikzpicture}%
+    %
+	\begin{columns}[c]
+		\begin{column}{.5\textwidth} % Left column and width
+			~\\
+			~\\
+			~\\
+           	When the applied \only<1>{loads change}\only<2->{\emphasis{loads change}}:\\%
+			%
+			\uncover<3->{A design can be \emphasis{changed}:}
+			%
+			\begin{itemize}
+				\item<4-> \textit{Scalability}: the ability to change to accommodate stricter requirements \ifshowcitations\footnotemark[1]\fi
+				\item<5-> Successful \textit{remanufacturing}: enabled by scalability of components \ifshowcitations\footnotemark[2]\fi
+			\end{itemize}
+			%
+		\end{column}
+		\begin{column}{.5\textwidth} % Left column and width
+		\end{column}
+	\end{columns}
+	%
+	{\color{white}
+	\ifshowcitations
+		\only<4->{\footpartcite{Ross2008}[1]}
+		\only<5->{\footpartcite{Xing2007}[2]}
+	\fi
+	}
+\end{frame}
+\addtocounter{footnote}{-2}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                   Design problem                  %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%------------------------------------------------
+\section{Parametric optimization problem formulation}
+% \frame{\tableofcontents[
+% 	currentsection, 
+% 	hideallsubsections
+% 	]}
+%------------------------------------------------
+\begin{frame}[c,noframenumbering]
+	\centering
+	% \setlength\fboxsep{0pt}
+	\begin{titleblock}{}
+		~\\%
+		{\centering\LARGE Change absorption through scalability and remanufacturing \ifshowcitations\footnotemark[1]\fi\\}%
+		~\\%
+	\end{titleblock}
+	{\color{white}\ifshowcitations\footpartcite{Alhandawi2020}[1]\fi}
+\end{frame}
+\addtocounter{footnote}{-1}
+%------------------------------------------------
+\subsection{Obtain set of parametric optimal designs using surrogate}
+%------------------------------------------------
+\begin{frame}[t]
+\frametitle{Parametric design optimization problem formulation}
+%
+Remanufacturing variables are included in the design optimization problems and changing requirements are modeled by parameters $\mathbf{p}$ \\~\\
+
+\vspace{-0.5em}
+\begin{columns}[t] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+	\column{.4\textwidth} % Left column and width
+		\vspace{-1em}
+		% Optimization problem
+		\begin{alertblock}{Design optimization problem}
+			\vspace{-1.5em}
+			\begin{equation*}
+				\begin{aligned}
+					& \underset{\mathbf{x}}{\text{minimize}}
+					& & {f}(\mathbf{x};\mathbf{p}) = -n_{\textrm{safety}}(\mathbf{x};P_{\textrm{load}})\\
+					& \text{subject to}
+					& & {g_1}(\mathbf{x};\mathbf{p}) = x_3 + x_1 - W_{\textrm{total}} \le 0\\
+					&&& {g_2}(\mathbf{x};\mathbf{p}) = T_m - T_{\textrm{deposit}} \le 0\\
+				\end{aligned}
+			\end{equation*}
+		\end{alertblock}
+		% Parameters
+		\vspace{-1em}
+		\only<1->{
+		\begin{exampleblock}{Changing requirements}
+			\vspace{-1.5em}
+			\begin{equation*}
+				\begin{aligned}
+					& & & W_{\textrm{total}} = \textrm{width of base part}\\
+					& & & T_{m} = \textrm{Melting temperature of deposit}\\
+					& & & P_{\textrm{load}} = \textrm{Pressure load on outer casing}\\
+				\end{aligned}
+			\end{equation*}
+		\end{exampleblock}
+		}%
+		
+	\column{.6\textwidth} % Right column and width
+		
+		\begin{figure}
+			\includegraphics[height=5cm]{scalability/TRS_overview_pictures/1b_TRS_overview_3.pdf}
+			\caption{TRS cross-section}
+		\end{figure}
+	\end{columns}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%              Parametric optimization              %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%------------------------------------------------
+\section{Scalability Assessment}
+% \frame{\tableofcontents[
+% 	currentsection, 
+% 	hideallsubsections
+% 	]}
+%------------------------------------------------
+\subsection{Conditions for scalability}
+%------------------------------------------------
+\begin{frame}[t]
+\frametitle{Conditions for scalability}
+%
+\vspace{-0.5em}
+\begin{columns}[t] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+	\column{.4\textwidth} % Left column and width
+		\vspace{-1em}
+		% Optimization problem
+		\begin{alertblock}{Design optimization problem}
+			\vspace{-1.5em}
+			\begin{equation*}
+				\begin{aligned}
+					& \underset{\mathbf{x}}{\text{minimize}}
+					& & {f}(\mathbf{x};\mathbf{p}) = -n_{\textrm{safety}}(\mathbf{x};{P_{\textrm{load}}})\\
+					& \text{subject to}
+					& & {g_1}(\mathbf{x};\mathbf{p}) = x_3 + x_1 - {W_{\textrm{total}}} \le 0\\
+					&&& {g_2}(\mathbf{x};\mathbf{p}) = {T_m} - T_{\textrm{deposit}} \le 0\\
+				\end{aligned}
+			\end{equation*}
+		\end{alertblock}
+		% Parameters
+		\vspace{-1em}
+		\begin{exampleblock}{Changing requirements}
+			\vspace{-1.5em}
+			\begin{equation*}
+				\begin{aligned}
+					& & & W_{\textrm{total}} = \textrm{width of base part}\\
+					& & & T_{m} = \textrm{Melting temperature of deposit}\\
+					& & & P_{\textrm{load}} = \textrm{Pressure load on outer casing}\\
+				\end{aligned}
+			\end{equation*}
+		\end{exampleblock}
+		
+	\column{.6\textwidth} % Right column and width
+		Let us consider one variable %({\color{red}$x_3$}) 
+  and two parameters 
+  %({\color{red}$p_2$} and {\color{red}$p_3$})
+  \\
+		For an optimal design to be scalable, the product of 
+		\begin{itemize}
+			\item<2-> the \emphasis{direction of change} 
+			\item<5-> the \emphasis{change effect}, and 
+			\item<6-> the variable \emphasis{monotonicity} 
+		\end{itemize}
+ \uncover<6->{must be greater or equal to zero}
+		\uncover<13->{~\\Our full example: {\color{red}$4$} variables and {\color{red}$3$} parameters}
+
+		\newcommand{\xshift}{5.6cm}
+		\newcommand{\yshift}{-2cm}
+
+		\begin{tikzpicture}[remember picture,overlay]
+				
+			\only<6>{
+				\node (textscalable) at ( [xshift = \xshift, yshift = -0.1cm] current page.center)
+				{\textbf{Scalable design!}};
+			}%
+			\only<12>{
+				\node (textscalable) at ( [xshift = \xshift, yshift = -0.1cm] current page.center)
+				{\textbf{{\color{red} Not} a Scalable design!}};
+			}%
+
+			\only<1>{
+				\fixedpicture{\xshift}{\yshift}{3.6cm}{scalability/scalability_example/11_gradient_demo_1.pdf}
+			}% empty contours
+			\only<2>{
+				\fixedpicture{\xshift}{\yshift}{3.6cm}{scalability/scalability_example/11_gradient_demo_2.pdf}
+			}% gradient vector only
+			\only<3>{
+				\fixedpicture{\xshift}{\yshift}{3.6cm}{scalability/scalability_example/11_gradient_demo_3.pdf}
+			}% gradient vector + component A
+			\only<4>{
+				\fixedpicture{\xshift}{\yshift}{3.6cm}{scalability/scalability_example/11_gradient_demo_4.pdf}
+			}% gradient vector + component A + B
+			\only<5-6>{
+				\fixedpicture{\xshift}{\yshift}{3.6cm}{scalability/scalability_example/11_gradient_demo_5.pdf}
+			}% gradient vector + component A + B + change quadrant (scalable)
+			\only<7>{
+				\fixedpicture{\xshift}{\yshift}{3.6cm}{scalability/scalability_example/11_gradient_demo_6.pdf}
+			}% empty contours
+			\only<8>{
+				\fixedpicture{\xshift}{\yshift}{3.6cm}{scalability/scalability_example/11_gradient_demo_7.pdf}
+			}% gradient vector only
+			\only<9>{
+				\fixedpicture{\xshift}{\yshift}{3.6cm}{scalability/scalability_example/11_gradient_demo_8.pdf}
+			}% gradient vector + component A
+			\only<10>{
+				\fixedpicture{\xshift}{\yshift}{3.6cm}{scalability/scalability_example/11_gradient_demo_9.pdf}
+			}% gradient vector + component A + B
+			\only<11-12>{
+				\fixedpicture{\xshift}{\yshift}{3.6cm}{scalability/scalability_example/11_gradient_demo_10.pdf}
+			}% gradient vector + component A + B + change quadrant (non scalable)
+		\end{tikzpicture}
+
+
+	\end{columns}
+	\only<-12>{~\\~\\}%
+	$
+		\small
+		\only<-12>{
+			\uncover<5->{
+				\overbrace{
+					\begin{bmatrix}
+						\color<3->{red}-1 & 0\\ 
+						0 & \color<3->{red}-1
+					\end{bmatrix}
+				}^{\mathbf{N}=\textrm{Change effect}}
+				\times
+			}%
+		}% example matrix
+		\only<13->{
+			\overbrace{
+				\begin{bmatrix}
+					\color{red}n_1 &  0 & 0\\ 
+					0 & \color{red}n_2 & 0\\ 
+					0 &  0 & \color{red}n_3
+				\end{bmatrix}
+			}^{\mathbf{N}=\textrm{Change effect}}
+			\times
+		} % generalized matrix
+		%---------------------------------
+		\only<-12>{
+			\uncover<2->{
+				\overbrace{
+					\begin{bmatrix}
+						\uncover<3->{{^{\partial x_3^*}/_{\partial p_2}}} \\ 
+						\uncover<4->{{^{\partial x_3^*}/_{\partial p_3}}}
+					\end{bmatrix}
+				}^{\mathbf{J}=\textrm{Direction of change}}
+			}
+		}% example matrix
+		\only<13->{
+			\uncover<2->{
+				\overbrace{
+					\begin{bmatrix}
+						{^{\partial x_1^*}/_{\partial p_1}} & {^{\partial x_2^*}/_{\partial p_1}} & {^{\partial x_3^*}/_{\partial p_1}} & {^{\partial x_4^*}/_{\partial p_1}} \\ 
+						{^{\partial x_1^*}/_{\partial p_2}} & {^{\partial x_2^*}/_{\partial p_2}} & {^{\partial x_3^*}/_{\partial p_2}} & {^{\partial x_4^*}/_{\partial p_2}} \\ 
+						{^{\partial x_1^*}/_{\partial p_3}} & {^{\partial x_2^*}/_{\partial p_3}} & {^{\partial x_3^*}/_{\partial p_3}} & {^{\partial x_4^*}/_{\partial p_3}}
+					\end{bmatrix}
+				}^{\mathbf{J}=\textrm{Direction of change}}
+			}
+		}% generalized matrix
+		%---------------------------------
+		\only<-12>{
+			\uncover<6->{
+				\times
+				\overbrace{
+					\begin{bmatrix}
+						\color<4->{red}1
+					\end{bmatrix} 
+				}^{\mathbf{M}=\textrm{Monotonicity}}
+				\ge \mathbf{0}
+			}%
+		}% example matrix
+		\only<13->{
+			\times
+			\overbrace{
+				\begin{bmatrix}
+					\color{red}m_1 & 0 & 0 & 0 \\ 
+					0 & \color{red}m_2 & 0 & 0 \\ 
+					0 & 0 & \color{red}m_3 & 0 \\ 
+					0 & 0 & 0 & \color{red}m_4
+				\end{bmatrix} 
+			}^{\mathbf{M}=\textrm{Monotonicity}}
+			\ge \mathbf{0}
+		}% generalized matrix
+	$
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%               Scalability assessment              %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%------------------------------------------------
+\section{Practical scalability results}
+% \frame{\tableofcontents[
+% 	currentsection, 
+% 	hideallsubsections
+% 	]}
+%------------------------------------------------
+\subsection{Response surface of parameter space to obtain scalable optimal designs}
+%------------------------------------------------
+\begin{frame}[t]
+\frametitle{Response surface of parametric optimal solutions and scalable designs}
+\begin{itemize}
+	\item Computing the components of $\mathbf{J}(\mathbf{p})$ can be prohibitively expensive 
+ %in engineering design
+	\item<2-> Response surface $\hat{\mathbf{x}^*}(\mathbf{p})$ can be obtained from parametric optimal designs $\mathbf{X}^*= \left\{\mathbf{x}^*(\mathbf{p}_1)~\mathbf{x}^*(\mathbf{p}_2)~\cdots~\mathbf{x}^*(\mathbf{p}_k)\right\}$ \\
+	(we use kernel smoothing)
+ %is used for the response surface
+	\item<3-> Jacobian $\mathbf{J}(\mathbf{p})$ of $\hat{\mathbf{x}^*}(\mathbf{p})$ estimated from the derivatives of the kernel basis functions
+	\item<4-> Scalable optimal designs given by $\mathbf{N}\mathbf{J}(\mathbf{p})^{\mathrm T}\mathbf{M} \ge \mathbf{0}$. %This is the \emphasis{set of designs} we are looking for.
+\end{itemize}
+
+\begin{figure}
+	\only<2-3>{\includegraphics[width=0.9\textwidth]{scalability/parameter_space/8_PS_f_1.pdf}}%
+	\only<4->{\includegraphics[width=0.9\textwidth]{scalability/parameter_space/8_PS_f_3.pdf}}%
+	%\caption{\only<2->{2D projections of the parameter space  \only<5>{with {\color{red}sescalable regions} overlayed}}
+\end{figure}
+
+\end{frame}
+
+%NEW
+%------------------------------------------------
+\subsection{Scalable optimal designs in the design space}
+%------------------------------------------------
+\begin{frame}[t]
+\frametitle{Map scalable optimal design set to design space}
+% \only<1>{
+% 	Scalable optimal designs mapped back to design space using response surface
+% }%
+% \only<2->{This is the result we are looking for! \only<4>{\color{red}A manageable set of scalable solutions}}%
+% \only<1>{
+% \begin{tikzpicture}[remember picture,overlay]
+% 	\node (SBDresult) at ([xshift=0.5\textwidth, yshift =-0.05\textwidth]current page.west) %or: (current page.center)
+% 		{\includegraphics[width=0.9\textwidth]{scalability/SBD_results/6_SBD_results_f_9.pdf}};
+% \end{tikzpicture}
+% }%
+% \only<2>{
+\begin{tikzpicture}[remember picture,overlay]
+	\node (SBDresult) at ([xshift=0.5\textwidth, yshift =-0.05\textwidth]current page.west) %or: (current page.center)
+		{\includegraphics[width=0.9\textwidth]{scalability/SBD_results/6_SBD_results_f_10.pdf} };
+\end{tikzpicture}
+%}%
+% \only<3>{
+% \begin{tikzpicture}[remember picture,overlay]
+% 	\node (SBDresult) at ([xshift=0.5\textwidth, yshift =-0.05\textwidth]current page.west) %or: (current page.center)
+% 		{\includegraphics[width=0.9\textwidth]{scalability/SBD_results/6_SBD_results_f_11.pdf}};
+% \end{tikzpicture}
+% }%
+% \only<4>{
+% \begin{tikzpicture}[remember picture,overlay]
+% 	\node (SBDresult) at ([xshift=0.5\textwidth, yshift =-0.05\textwidth]current page.west) %or: (current page.center)
+% 		{\includegraphics[width=0.9\textwidth]{scalability/SBD_results/6_SBD_results_f_12.pdf}};
+% \end{tikzpicture}
+% }%
+
+\end{frame}
+

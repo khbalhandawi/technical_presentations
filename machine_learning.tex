@@ -1,0 +1,471 @@
+%==============================================================================%
+%% Mathematical symbols
+\newcommand{\Ti}{\mbox{$T_1$}}
+\newcommand{\nh}{\mbox{$n_\text{hidden}$}}
+\newcommand{\Pd}{\mbox{$P_\text{dropout}$}}
+\newcommand{\nla}{\mbox{$n_\text{layers}$}}
+\newcommand{\Pt}{\mbox{$P_\text{teacher}$}}
+\newcommand{\lr}{\mbox{$l_\text{rate}$}}
+\newcommand{\bs}{\mbox{$b_\text{size}$}}
+\newcommand{\R}{\mbox{$\lambda$}}
+\newcommand{\e}{\mbox{$\epsilon$}}
+\newcommand{\etol}{\mbox{$\epsilon_\text{tol}$}}
+\newcommand{\fs}{\mbox{$f_\text{sample}$}}
+\newcommand{\ff}{\mbox{$f_\text{features}$}}
+\newcommand{\D}{\mbox{$D$}}
+\newcommand{\ns}{\mbox{$n_\text{stages}$}}
+\newcommand{\nd}{\mbox{$n_\text{degree}$}}
+
+\newcommand{\To}{\mbox{$T_2$}}
+\newcommand{\np}{\mbox{$n_\text{patience}$}}
+\newcommand{\nepoch}{\mbox{$n_\text{epochs}$}}
+\newcommand{\nbest}{\mbox{$n_\text{epochs}^\text{best}$}}
+%==============================================================================%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%         Supplementary Content: COVID-19           %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%------------------------------------------------
+\begin{frame}[c,noframenumbering]
+	\centering
+	% \setlength\fboxsep{0pt}
+	\begin{titleblock}{}
+		~\\%
+		{\centering\LARGE Supplementary content: COVID-19 incidence now-casting using machine learning\\}%
+		~\\%
+	\end{titleblock}
+\end{frame}
+%------------------------------------------------
+\subsection{Overview of problem}
+%------------------------------------------------
+\begin{frame}[t]
+	\frametitle{COVID-19 incidence forecasting}
+	\tikzstyle{background grid}=[draw, black!50,step=.5cm]
+	%
+	How to \emph{design} a machine learning model for forecasting a time-series?\\
+	%
+	\tikzstyle{background grid}=[draw, black!50,step=.5cm]
+	\begin{tikzpicture}[remember picture, overlay] %show background grid, 
+		% Put the graphic inside a node. This makes it easy to place the
+		% graphic and to draw on top of it. 
+		% The above right option is used to place the lower left corner
+		% of the image at the (0,0) coordinate. 
+		\node [inner sep=0pt,above right, opacity=1.0]  at (0.0\textwidth,-0.72\textheight) (raw data) 
+			{
+				\only<1>{\includegraphics[width=0.43\textwidth]{machine_learning/raw_data/animation_0.pdf}}%
+				\only<2>{\includegraphics[width=0.43\textwidth]{machine_learning/raw_data/animation_1.pdf}}%
+				\only<3>{\includegraphics[width=0.43\textwidth]{machine_learning/raw_data/animation_2.pdf}}%
+				\only<4->{\includegraphics[width=0.43\textwidth]{machine_learning/raw_data/animation_3.pdf}}%
+			};
+		\node [inner sep=0pt,above left, opacity=1.0]  at (0.99\textwidth,-0.65\textheight) (seq2seq) 
+			{
+				\only<5>{\includegraphics[width=0.55\textwidth]{machine_learning/model_1.pdf}}%
+				\only<6>{\includegraphics[width=0.55\textwidth]{machine_learning/model_2.pdf}}%
+				\only<7>{\includegraphics[width=0.55\textwidth]{machine_learning/model_3.pdf}}%
+			};
+		\only<5->{
+			\node[inner sep=0pt,align=flush center,below=\belowcaptionskip of seq2seq,text width=\linewidth]
+				{\vspace{-1em}{Seq2Seq model}};
+		}%
+		\node [inner sep=0pt, opacity=1.0]  at (0.43\textwidth,-0.15\textheight) (ct) {};%
+		\node [inner sep=0pt, opacity=1.0]  at (0.43\textwidth,-0.50\textheight) (cases) {};%
+		\only<-6>{
+			\node [inner sep=0pt, opacity=1.0]  at (0.65\textwidth,-0.50\textheight) (input) {};%
+		}%
+		\only<7->{
+			\node [inner sep=0pt, opacity=1.0]  at (0.60\textwidth,-0.60\textheight) (input) {};%
+		}%
+		% show origin
+		% \fill (0,0) circle (2pt);
+	\end{tikzpicture}%
+	%
+	\begin{tikzpicture}[overlay]
+		\only<5->{\path[->,magenta,thick] (ct) edge [out=0, in=270] (input);}
+		\only<5->{\path[->,magenta,thick] (cases) edge [out=0, in=270] (input);}
+	\end{tikzpicture}%
+	%
+	\vspace{-3em}
+\end{frame}
+%------------------------------------------------
+\subsection{Hyperparameter tuning}
+%------------------------------------------------
+\begin{frame}[t]
+    \frametitle{Training the model}
+	%
+	There are several challenges associated with hyperparameter optimization\\
+	%
+    \begin{columns}[t] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+		
+        \begin{column}{.5\textwidth} % Left column and width
+        \only<1->{
+			\begin{itemize}
+				\item The number of epochs can be tuned using \textit{early stopping}%
+				\item This is a form of \textit{regularization} to reduce over-fitting%
+			\end{itemize}
+        }%
+        \only<3->{
+			~~~However,\\
+			\uncover<4->{
+				~~~1) Other hyperparameters to tune
+				\begin{itemize}
+					\item Dropout%
+					\item Training batch size%
+					\item Activation function(s)%
+				\end{itemize}
+			}%
+            \uncover<5->{~~~2) Training can be \emphasis{expensive}}\\
+            \uncover<6->{~~~3) Backpropagation is \emphasis{stochastic}}
+        }%
+    
+        \end{column}
+    
+        \begin{column}{.5\textwidth} % Left column and width
+    
+            \vspace{-1.5em}
+            \begin{figure}
+                \centering
+                \only<1>{\includegraphics[width=0.9\textwidth]{machine_learning/training/epoch_0.pdf}}%
+                \only<2>{
+					\begin{animateinline}[autoplay,width=0.9\textwidth]{8}
+						\ifshowanimations
+							\multiframe{52}{i=0+5}{%
+								\includegraphics{machine_learning/training_anim/epoch_\i.pdf}
+							}
+						\else
+							\multiframe{1}{i=262+0}{%
+								\includegraphics{machine_learning/training/epoch_\i.pdf}
+							}
+						\fi
+					\end{animateinline}%
+                }%
+                \only<3->{\includegraphics[width=0.9\textwidth]{machine_learning/training/final_model.pdf}}%
+                \vspace{-0.75em}
+                \caption{Effect of number of epochs on testing loss}
+            \end{figure}%
+        \end{column}
+    \end{columns}
+        
+\end{frame}
+%------------------------------------------------
+\begin{frame}[t]
+	\frametitle{Hyperparameter tuning}
+	\tikzstyle{background grid}=[draw, black!50,step=.5cm]
+	%
+	We can use StoMADS to solve such hyperparameter optimization problems \ifshowcitations\footpartcite{Khalil2021}\fi\\
+	%
+	\tikzstyle{background grid}=[draw, black!50,step=.5cm]
+	\begin{tikzpicture}[remember picture, overlay] %show background grid, 
+		% Put the graphic inside a node. This makes it easy to place the
+		% graphic and to draw on top of it. 
+		% The above right option is used to place the lower left corner
+		% of the image at the (0,0) coordinate. 
+		\node [inner sep=0pt,above right, opacity=1.0]  at (-0.01\textwidth,-0.7\textheight) (error) 
+			{
+				\only<1>{\includegraphics[width=0.5\textwidth]{machine_learning/box_plots/boxplot_input_dim_0.pdf}}%
+				\only<2>{\includegraphics[width=0.5\textwidth]{machine_learning/box_plots/boxplot_input_dim_1.pdf}}%
+				\only<3>{\includegraphics[width=0.5\textwidth]{machine_learning/box_plots/boxplot_input_dim_2.pdf}}%
+				\only<4>{\includegraphics[width=0.5\textwidth]{machine_learning/box_plots/boxplot_input_dim_3.pdf}}%
+				\only<5>{\includegraphics[width=0.5\textwidth]{machine_learning/box_plots/boxplot_input_dim_4.pdf}}%
+				\only<6>{\includegraphics[width=0.5\textwidth]{machine_learning/box_plots/boxplot_input_dim_5.pdf}}%
+				\only<7>{\includegraphics[width=0.5\textwidth]{machine_learning/box_plots/boxplot_input_dim_6.pdf}}%
+				\only<8>{\includegraphics[width=0.5\textwidth]{machine_learning/box_plots/boxplot_input_dim_opt.pdf}}%
+				\only<9>{\includegraphics[width=0.5\textwidth]{machine_learning/box_plots/boxplot_hid_dim_opt.pdf}}%
+				\only<10>{\includegraphics[width=0.5\textwidth]{machine_learning/box_plots/boxplot_dropout_opt.pdf}}%
+			};
+		\node [inner sep=0pt,above left, opacity=1.0]  at (1.01\textwidth,-0.7\textheight) (prediction) 
+			{
+				\only<1>{\includegraphics[width=0.5\textwidth]{machine_learning/models/model_input_dim_0.pdf}}%
+				\only<2>{\includegraphics[width=0.5\textwidth]{machine_learning/models/model_input_dim_1.pdf}}%
+				\only<3>{\includegraphics[width=0.5\textwidth]{machine_learning/models/model_input_dim_2.pdf}}%
+				\only<4>{\includegraphics[width=0.5\textwidth]{machine_learning/models/model_input_dim_3.pdf}}%
+				\only<5>{\includegraphics[width=0.5\textwidth]{machine_learning/models/model_input_dim_4.pdf}}%
+				\only<6>{\includegraphics[width=0.5\textwidth]{machine_learning/models/model_input_dim_5.pdf}}%
+				\only<7>{\includegraphics[width=0.5\textwidth]{machine_learning/models/model_input_dim_6.pdf}}%
+				\only<8>{\includegraphics[width=0.5\textwidth]{machine_learning/models/final_model_input_dim.pdf}}%
+				\only<9>{\includegraphics[width=0.5\textwidth]{machine_learning/models/final_model_hid_dim.pdf}}%
+				\only<10->{\includegraphics[width=0.5\textwidth]{machine_learning/models/final_model_dropout.pdf}}%
+			};
+		% show origin
+		% \fill (0,0) circle (2pt);
+	\end{tikzpicture}%
+	%
+	\begin{columns}[t] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+		\begin{column}{.42\textwidth} % Left column and width
+			\vspace{-2.0em}
+			% Optimization problem
+			\uncover<11->{
+				\begin{exampleblock}{Objective and constraints}
+					\vspace{-0.0em}
+					\begin{equation*}
+						\begin{aligned}
+							& \underset{\mathbf{x}}{\text{min}}
+							& & f(\mathbf{x}) = \mathbb{E}_{\Theta}\left[{f}_{\Theta}(\mathbf{x}) = \mathrm{error}_\mathrm{CV}\right]\\
+							& \text{where}
+							& & \Theta\mathrm{:realizations}
+						\end{aligned}
+					\end{equation*}
+				\end{exampleblock}
+			}%
+			\vspace{-0.5em}
+			\uncover<11->{
+				% Variables
+				\begin{alertblock}{Design variables ($\mathbf{x}$)}
+					\vspace{-0.0em}
+						\begin{itemize}\itemsep0em
+							\item $T_1:$ Input dimension
+							\item $n_\text{hidden}:$ Number of hidden neurons
+							\item $P_\text{dropout}:$ Probability of dropout, etc.
+						\end{itemize}
+				\end{alertblock}
+			}%
+			\vspace{-0.5em}
+			\uncover<11->{
+				% Parameters
+				\begin{blueblock}{Randomly seeded parameters}
+					\vspace{-0.0em}
+					\begin{itemize}\itemsep0em
+						\item Initial weights
+						\item Gradient descent steps
+					\end{itemize}
+				\end{blueblock}
+			}%
+		\end{column}
+		%
+		\begin{column}{.5\textwidth} % Left column and width
+		\end{column}
+	
+	\end{columns}
+	%
+	\vspace{-3em}
+\end{frame}
+\addtocounter{footnote}{-1}
+%------------------------------------------------
+\subsection{Results}
+\subsubsection{Optimal hyperparameters}
+%------------------------------------------------
+\begin{frame}[t]
+	\frametitle{Results: Optimal hyperparameters}
+	\tikzstyle{background grid}=[draw, black!50,step=.5cm]
+	%
+	Optimal hyperparameters for the \emph{Seq2Seq} model:\\
+	%
+	\tikzstyle{background grid}=[draw, black!50,step=.5cm]
+	\begin{tikzpicture}[remember picture, overlay] %show background grid, 
+		% Put the graphic inside a node. This makes it easy to place the
+		% graphic and to draw on top of it. 
+		% The above right option is used to place the lower left corner
+		% of the image at the (0,0) coordinate. 
+		\node [inner sep=0pt,above left, opacity=1.0]  at (1.01\textwidth,-0.73\textheight) (prediction) 
+			{\includegraphics[width=0.5\textwidth]{machine_learning/predictions/model_predictions_test_S2S_mean_Ct_daily_cases.pdf}};
+		% show origin
+		% \fill (0,0) circle (2pt);
+	\end{tikzpicture}%
+	%
+	\begin{columns}[t] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+		\begin{column}{.42\textwidth} % Left column and width
+			\vspace{-2.0em}
+            % Column widths
+            \newcommand{\ocwb}{3.7cm}
+            \newcommand{\ocwc}{1cm}
+            \newcommand{\ocwd}{1.2cm}
+            \newcommand{\ocwe}{3cm}
+            %
+            \begin{table}[h!]
+                \centering
+                \footnotesize
+                \renewcommand{\arraystretch}{1.5}% Wider
+                \begin{tabular}{L{\ocwb}C{\ocwc}C{\ocwd}} \toprule
+                    \multicolumn{2}{c}{\bf Hyperparameter}	& \bf Value         \\ \toprule
+                    Sliding window size  		& \Ti		&	6				\\
+                    Number of hidden neurons	& \nh		&	1500			\\
+                    Probability of dropout		& \Pd		&	0.8				\\
+                    Number of hidden layers		& \nh		&	2				\\
+                    Teacher forcing probability	& \Pt		&	0.3				\\
+                    Learning rate 				& \lr		&	$1\times10^{-4}$\\
+                    batch size 					& \bs		&	32				\\\hline
+                \end{tabular}
+            \end{table}
+        \end{column}
+		%
+		\begin{column}{.5\textwidth} % Left column and width
+		\end{column}
+	
+	\end{columns}
+	%
+	\vspace{-3em}
+\end{frame}
+%------------------------------------------------
+\begin{frame}[t]
+	\frametitle{Results: Optimal hyperparameters}
+	\tikzstyle{background grid}=[draw, black!50,step=.5cm]
+	%
+	Optimal hyperparameters for the \emph{support vector machine regression (SVR)} model:\\
+	%
+	\tikzstyle{background grid}=[draw, black!50,step=.5cm]
+	\begin{tikzpicture}[remember picture, overlay] %show background grid, 
+		% Put the graphic inside a node. This makes it easy to place the
+		% graphic and to draw on top of it. 
+		% The above right option is used to place the lower left corner
+		% of the image at the (0,0) coordinate. 
+		\node [inner sep=0pt,above left, opacity=1.0]  at (1.01\textwidth,-0.73\textheight) (prediction) 
+			{\includegraphics[width=0.5\textwidth]{machine_learning/predictions/model_predictions_test_SVR_mean_Ct_daily_cases.pdf}};
+		% show origin
+		% \fill (0,0) circle (2pt);
+	\end{tikzpicture}%
+	%
+	\begin{columns}[t] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+		\begin{column}{.42\textwidth} % Left column and width
+			\vspace{-2.0em}
+            % Column widths
+            \newcommand{\ocwb}{3.7cm}
+            \newcommand{\ocwc}{1cm}
+            \newcommand{\ocwd}{1.2cm}
+            \newcommand{\ocwe}{3cm}
+            %
+            \begin{table}[h!]
+                \centering
+                \footnotesize
+                \renewcommand{\arraystretch}{1.5}% Wider
+                \begin{tabular}{L{\ocwb}C{\ocwc}C{\ocwd}} \toprule
+                    \multicolumn{2}{c}{\bf Hyperparameter}				    & \bf Value             \\ \toprule
+                    Sliding window size 						& \Ti	    &	6					\\
+                    Ridge factor								& \R	    &	$1\times10^{-4}$	\\
+                    Margin of tolerance							& \e	    &	$1\times10^{-2}$	\\
+                    Stopping criteria tolerance					& \etol	    &	0.1					\\
+                    Learning rate 								& \lr	    &	$1\times10^{-5}$	\\ \hline
+                \end{tabular}
+            \end{table}
+            \uncover<2->{Support vector machine models have \emphasis{deterministic} performance}
+        \end{column}
+		%
+		\begin{column}{.5\textwidth} % Left column and width
+		\end{column}
+	
+	\end{columns}
+	%
+	\vspace{-3em}
+\end{frame}
+%------------------------------------------------
+\subsubsection{Prospective validation}
+%------------------------------------------------
+\begin{frame}[t]
+	\frametitle{Results: Prospective validation}
+	\tikzstyle{background grid}=[draw, black!50,step=.5cm]
+	%
+	Performance of models on \emphasis{unseen} data (first 4 months of 2021):\\
+	%
+	\tikzstyle{background grid}=[draw, black!50,step=.5cm]
+	\begin{tikzpicture}[remember picture, overlay] %show background grid, 
+		% Put the graphic inside a node. This makes it easy to place the
+		% graphic and to draw on top of it. 
+		% The above right option is used to place the lower left corner
+		% of the image at the (0,0) coordinate. 
+		\node [inner sep=0pt,above left, opacity=1.0]  at (1.01\textwidth,-0.73\textheight) (prediction) 
+			{
+                \only<1>{\includegraphics[width=0.5\textwidth]{machine_learning/predictions/model_predictions_unseen_S2S_mean_Ct_daily_cases_truth.pdf}}%
+                \only<2>{\includegraphics[width=0.5\textwidth]{machine_learning/predictions/model_predictions_unseen_S2S_mean_Ct_daily_cases.pdf}}%
+                \only<3>{\includegraphics[width=0.5\textwidth]{machine_learning/predictions/model_predictions_unseen_SVR_mean_Ct_daily_cases.pdf}}%
+            };
+		% show origin
+		% \fill (0,0) circle (2pt);
+	\end{tikzpicture}%
+	%
+	\begin{columns}[t] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+		\begin{column}{.42\textwidth} % Left column and width
+			\vspace{-2.0em}
+            % Column widths
+            \newcommand{\ocwa}{5cm}
+            \newcommand{\ocwb}{1.6cm}
+            \newcommand{\ocwc}{1.6cm}
+            \newcommand{\ocwd}{1.6cm}
+            %
+            \begin{table}[h!]
+                \centering
+                \footnotesize
+                \renewcommand{\arraystretch}{1.5}% Wider
+                \begin{tabular}{L{\ocwa}C{\ocwd}} \toprule
+                    \multicolumn{1}{c}{\bf Model}               & \multicolumn{1}{c}{\bf Test error}    \\ \toprule
+                    \only<2>{\emphasis}{Seq2Seq}		        & \only<2>{\emphasis}{0.571}            \\
+                    Long short term memory (LSTM) cell          & 0.326                                 \\
+                    feedforward neural network	                & 0.255                                 \\
+                    \only<3>{\emphasis}{Support vector machine} & \only<3>{\emphasis}{0.168}            \\
+                    Gradient boosting 		                    & 1.444                                 \\
+                    Linear regression 		                    & 0.160                                 \\ \bottomrule
+                \end{tabular}
+            \end{table}
+        \end{column}
+        %
+		\begin{column}{.5\textwidth} % Left column and width
+		\end{column}
+	
+	\end{columns}
+	%
+	\vspace{-3em}
+\end{frame}
+%------------------------------------------------
+\begin{frame}[t]
+	\frametitle{Results: Prospective validation}
+	\tikzstyle{background grid}=[draw, black!50,step=.5cm]
+	%
+	Effect of increasing number of training days (Adding 1 month of data):\\
+	%
+	\tikzstyle{background grid}=[draw, black!50,step=.5cm]
+	\begin{tikzpicture}[remember picture, overlay] %show background grid, 
+		% Put the graphic inside a node. This makes it easy to place the
+		% graphic and to draw on top of it. 
+		% The above right option is used to place the lower left corner
+		% of the image at the (0,0) coordinate. 
+		\node [inner sep=0pt,above left, opacity=1.0]  at (1.01\textwidth,-0.73\textheight) (prediction) 
+			{
+                \only<1>{\includegraphics[width=0.5\textwidth]{machine_learning/predictions/model_predictions_unseen_S2S_mean_Ct_daily_cases.pdf}}%
+                \only<2>{\includegraphics[width=0.5\textwidth]{machine_learning/predictions/model_predictions_unseen_S2S_mean_Ct_daily_cases_G12.pdf}}%
+                \only<3>{\includegraphics[width=0.5\textwidth]{machine_learning/predictions/model_predictions_unseen_SVR_mean_Ct_daily_cases_G12.pdf}}%
+            };
+		% show origin
+		% \fill (0,0) circle (2pt);
+	\end{tikzpicture}%
+	%
+	\begin{columns}[t] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+		\begin{column}{.42\textwidth} % Left column and width
+			\vspace{-2.0em}
+            % Column widths
+            \newcommand{\ocwa}{5cm}
+            \newcommand{\ocwb}{1.6cm}
+            \newcommand{\ocwc}{1.6cm}
+            \newcommand{\ocwd}{1.6cm}
+            %
+            \begin{table}[h!]
+                \centering
+                \footnotesize
+                \renewcommand{\arraystretch}{1.5}% Wider
+                \begin{tabular}{L{\ocwa}C{\ocwd}} \toprule
+                    \multicolumn{1}{c}{\bf Model}               & \multicolumn{1}{c}{\bf Test error}                                \\ \toprule
+                    \only<1-2>{\emphasis}{Seq2Seq}		        & \only<1>{\emphasis{0.571}}\only<2->{\bf\color{darkgreen}{0.106}}   \\
+                    Long short term memory (LSTM) cell          & 0.326                                                             \\
+                    feedforward neural network	                & 0.255                                                             \\
+                    \only<3>{\emphasis}{Support vector machine} & \only<1-2>{0.168}\only<3>{\bf\color{darkgreen}{0.140}}            \\
+                    Gradient boosting 		                    & 1.444                                                             \\
+                    Linear regression 		                    & 0.160                                                             \\ \bottomrule
+                \end{tabular}
+            \end{table}
+        \end{column}
+        %
+		\begin{column}{.5\textwidth} % Left column and width
+		\end{column}
+	
+	\end{columns}
+	%
+	\vspace{-3em}
+\end{frame}
+%------------------------------------------------
+\subsection{UML diagram}
+%------------------------------------------------
+\begin{frame}[t]
+	\frametitle{UML diagram of code}
+    %
+	\begin{figure}
+        \centering
+		\only<1>{\includegraphics[width=1.0\textwidth]{machine_learning/classes_hpo.pdf}}%
+		\only<2>{\includegraphics[width=1.0\textwidth]{machine_learning/packages_hpo.pdf}}%
+    \end{figure}%
+\end{frame}
+%------------------------------------------------
